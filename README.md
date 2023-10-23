@@ -1,2 +1,7 @@
-# kotlin-auth-api
-Authentication API for various other projects
+# Kotlin Auth API
+
+Authentication API for various other projects.
+
+# TODO
+
+# Other stuff
