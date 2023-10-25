@@ -1,0 +1,41 @@
+# Spring
+spring:
+  datasource:
+    initialization-mode: never
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+# Server Properties
+server:
+  host: localhost
+  port: 9000
+  authenticationHeader: authorization
+
+# Project info
+project:
+  basePackage: grd.kotlin.authapi
+  creator: gardehal
+  url: https://github.com/gardehal
+  email: alex.thogar@gmail.com
+  title: Auth API
+  desc: API for authentication
+  version: 0.0.1
+  isTest: false
+  resourceDir: main
+
+# JWT
+jwt:
+  validity: 2592000000 # 1000 * 60 * 60 * 24 * 30: 30 days in milliseconds
+  issuer: AUTH.API
+  # Note, trailing space on purpose
+  tokenPrefix: "Bearer "
+
+# Logging events, changes to entities
+logging:
+  logSink: JSON
+  logLevel: DEBUG
+  disableLogRotation: false
+  logFileRotatePeriodInDays: 30
+  logFileDirectory: ./logs
+  logFilePrefix: AuthApi
+  logFileExtension: json

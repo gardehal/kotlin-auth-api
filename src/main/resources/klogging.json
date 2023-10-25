@@ -1,0 +1,25 @@
+{
+  "sinks": {
+    "stdout": {
+      "renderWith": "RENDER_SIMPLE",
+      "sendTo": "STDOUT"
+    },
+    "seq": {
+      "seqServer": "http://localhost:5341"
+    }
+  },
+  "logging": [
+    {
+      "levelRanges": [
+        {
+          "levels": "TRACE DEBUG INFO WARN ERROR FATAL",
+          "fromMinLevel": "TRACE",
+          "toSinks": [
+            "stdout",
+            "seq"
+          ]
+        }
+      ]
+    }
+  ]
+}
