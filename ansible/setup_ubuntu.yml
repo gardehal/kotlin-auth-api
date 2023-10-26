@@ -1,0 +1,218 @@
+---
+- name: Playbook for setting up scripts on servers (Ubuntu 22.04.1 LTS)
+  hosts: servers
+  become: true
+  vars_files:
+    - "group_vars/pi/vars.yml"
+
+  tasks:
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html
+    - name: Get Ansible fact - datetime
+      no_log: true
+      debug:
+        var: ansible_date_time
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+    - name: Install hwinfo, Java JDK, cron if absent
+      apt:
+        pkg:
+          # Meta
+          - hwinfo
+          - cron
+          # Java
+          - openjdk-18-jre-headless
+          # Docker
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: present
+        force_apt_get: true
+
+    # Docker test - https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-20-04
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_key_module.html
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_repository_module.html
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Pull default Docker image
+      community.docker.docker_image:
+        name: seq
+        source: pull
+
+    - name: Create default containers
+      community.docker.docker_container:
+        name: "seq_{{ item }}"
+        image: seq
+        command: sleep 1d
+        state: present
+      with_sequence: count=1
+
+    # https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
+    - name: Enable UFW
+      become_method: su
+      become_user: root
+      ufw:
+        state: enabled
+        policy: deny
+        logging: on
+
+    # https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
+    - name: Setup UFW rules for LAN
+      become_method: su
+      become_user: root
+      ufw:
+        rule: allow
+        from_ip: "{{ private_ip }}/24"
+
+    # https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
+    - name: Setup UFW rules for ports
+      become_method: su
+      become_user: root
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        protocol: "tcp"
+      with_items:
+        - "22"
+        - "9000"
+        - "443"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+    - name: Set permissions /var
+      become_method: su
+      become_user: root
+      file:
+        path: /var
+        mode: "777"
+        state: directory
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+    - name: Create executable directories for executables, configs, logging, scripts
+      file:
+        path: ["{{ authapi_path }}", "{{ authapi_config_path }}", "{{ logs_path }}", "{{ scripts_path }}"]
+        state: directory
+        mode: "777"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+    - name: Copy scripts to server
+      copy:
+        remote_src: false
+        src: ./scripts
+        dest: /var/www
+        mode: "777"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/cron_module.html
+    - name: Cron job for starting AuthApi on reboot
+      cron:
+        name: Start AuthApi on boot
+        special_time: reboot
+        job: "{{ scripts_path }}/authapi_start.sh"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/cron_module.html
+    - name: Cron job for rotating log file
+      cron:
+        name: Rotate AuthApi.log
+        special_time: monthly
+        job: "{{ scripts_path }}/authapi_rotate_log.sh"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+    # Klogging requires an environment path to use logging setup file, does not allow for programmatically setting path. On first set, this requires a terminal reboot
+    - name: Add env var for klogging
+      lineinfile:
+        path: "/etc/environment"
+        line: "{{ item }}"
+        create: true
+      with_items:
+        - "KLOGGING_CONFIG_PATH={{ klogging_config_path }}"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+    - name: Setup some basic info for AuthApi and software used
+      become_method: su
+      become_user: root
+      lineinfile:
+        path: "{{ server_info_path }}"
+        line: "{{ item }}"
+        create: true
+      with_items:
+        # Meta
+        - "# AuthApi"
+        - "API for recipes and planning menus."
+        - "#### Software needed"
+        - "- AuthApi jar file"
+        - "- hwinfo"
+        - "- openjdk-18-jre-headless"
+        - "- cron"
+        - "- python3"
+        - "- docker"
+        - "- SEQ for docker"
+        - "- whatever came bundled in Ubuntu 22.04.1 LTS"
+        - "#### Associated directories and files"
+        - "- {{ authapi_path }}"
+        - "- {{ logs_path }}"
+        - "- {{ scripts_path }}"
+        - "- {{ aliases }}"
+        - "- {{ ansible_log_path }}"
+        - "#### Running this project"
+        - "- As long as all software is installed and port 9000 is free, simply run the following command (alias): $ restartauth"
+        - "- Otherwise see the documentation on GitHub: https://github.com/gardehal/kotlin-auth-api"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+    # Note: Aliases requires reload of terminals, unsure if Ansible script may recognize them in first run
+    - name: Setup file for aliases
+      become_method: su
+      become_user: root
+      lineinfile:
+        path: "{{ aliases }}"
+        line: "{{ item }}"
+        create: true
+      with_items:
+        # Meta
+        - "alias reloadalias='. {{ aliases }} && echo \"Aliases reloaded\"'"
+        - "alias ra='reloadalias'"
+        # Logs
+        - "alias logs='cd {{ logs_path }}'"
+        - "alias ansiblelog='cat {{ ansible_log_path }}'"
+        - "alias al='ansiblelog'"
+        # Auth - API
+        - "alias cdauthapi='cd {{ authapi_path }}'"
+        - "alias cdca='cdauthapi'"
+        - "alias restartauth='{{ scripts_path }}/authapi_stop.sh && echo \"Stopped, restarting...\" && sleep 1 && {{ scripts_path }}/authapi_start.sh'"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+    - name: Log setup
+      become_method: su
+      become_user: root
+      lineinfile:
+        path: "{{ ansible_log_path }}"
+        line: "{{ item }}"
+        create: true
+      with_items:
+        - "{{ ansible_date_time.iso8601 }} - Ansible setup, AuthApi"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html
+    - name: Reboot reminder
+      debug:
+        msg: "Reminder: Some steps require a reboot of the terminal or machine to fully activate."

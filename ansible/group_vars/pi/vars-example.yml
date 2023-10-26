@@ -1,0 +1,17 @@
+ansible_user: my_user
+ansible_password: my_pass
+ansible_sudo_user: my_user
+ansible_sudo_pass: my_pass
+executable_path: ./../build/libs/AuthApi-0.0.1-SNAPSHOT.jar
+dotenv_path: ./../build/resources/main/.env
+klogging_path: ./../build/resources/main/klogging-server.json
+application_settings_path: ./../build/resources/main/application.yml
+authapi_path: /var/www/authapi
+authapi_config_path: /var/www/authapi/config
+klogging_config_path: /var/www/authapi/config/klogging.json
+logs_path: /var/www/logs
+ansible_log_path: /var/www/logs/ansible_log.log
+scripts_path: /var/www/scripts
+private_ip: some_ip
+server_info_path: /var/www/info.md
+aliases: /etc/profile.d/aliases.sh

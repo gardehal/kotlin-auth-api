@@ -1,0 +1,79 @@
+---
+- name: Playbook for deploying code to servers
+  hosts: servers
+  become: true
+  vars_files:
+    - "group_vars/pi/vars.yml"
+
+  tasks:
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html
+    - name: Get Ansible fact - datetime
+      no_log: true
+      debug:
+        var: ansible_date_time
+
+    # Any Windows tasks, win_shell, win_find, win_stat, fails with the same error: AnsiballZ_[task].ps1 is not recognized as the name of a cmdlet, function, script file, or operable program.
+    # The same error is given when trying to run one of these powershell scripts directly though win_shell, though running in powershell works
+    # https://docs.ansible.com/ansible/latest/collections/ansible/windows/win_find_module.html
+#    - name: Check executable exists
+#      delegate_to: localhost
+#      become: false
+#      win_find:
+#        path: "{{ executable_path }}"
+#        patterns: [ "*.jar" ]
+#      register: executable_stats
+
+    # Fail if no executable with debug?
+
+    # Run tests
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+    # Variables used by .env determined by Env under settings in code
+    - name: Copy .env to server
+      copy:
+        remote_src: false
+        src: "{{ dotenv_path }}"
+        dest: "{{ authapi_config_path }}"
+        mode: "777"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+    # Application.yml used determined by Spring Boot, here ./config relative to jar path takes priority over file in jar
+    - name: Copy application.yml to server
+      copy:
+        remote_src: false
+        src: "{{ application_settings_path }}"
+        dest: "{{ authapi_config_path }}"
+        mode: "777"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+    - name: Copy klogging.json to server
+      copy:
+        remote_src: false
+        src: "{{ klogging_path }}"
+        dest: "{{ authapi_config_path }}/klogging.json"
+        mode: "777"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+    - name: Copy executable to server
+      copy:
+        remote_src: false
+        src: "{{ executable_path }}"
+        dest: "{{ authapi_path }}/AuthApi.jar"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html#ansible-collections-ansible-builtin-command-module
+    - name: Stop AuthApi
+      command: "{{ scripts_path }}/authapi_stop.sh"
+      ignore_errors: true # Ignore errors caused by API not running
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html#ansible-collections-ansible-builtin-command-module
+    - name: Start AuthApi
+      command: "{{ scripts_path }}/authapi_start.sh"
+
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+    - name: Log deploy
+      lineinfile:
+        path: "{{ ansible_log_path }}"
+        line: "{{ item }}"
+        create: true
+      with_items:
+        - "{{ ansible_date_time.iso8601 }} - Ansible deploy, AuthApi"
