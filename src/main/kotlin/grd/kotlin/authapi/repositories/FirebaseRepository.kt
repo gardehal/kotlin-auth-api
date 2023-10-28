@@ -1,10 +1,10 @@
 package grd.kotlin.authapi.repositories
 
 import grd.kotlin.authapi.exceptions.ArgumentException
-import com.chook.api.exceptions.NotImplementedException
-import com.chook.api.exceptions.TestEnvironmentException
+import grd.kotlin.authapi.exceptions.NotImplementedException
+import grd.kotlin.authapi.exceptions.TestEnvironmentException
 import grd.kotlin.authapi.interfaces.RepositoryInterface
-import com.chook.api.settings.Settings
+import grd.kotlin.authapi.settings.Settings
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.Firestore

@@ -1,8 +1,8 @@
 package grd.kotlin.authapi.models
 
-import com.chook.api.annotations.NotLogged
-import com.chook.api.annotations.Sensitive
-import com.chook.api.enums.UserRole
+import grd.kotlin.authapi.annotations.NotLogged
+import grd.kotlin.authapi.annotations.Sensitive
+import grd.kotlin.authapi.enums.UserRole
 import java.time.Instant
 import java.util.*
 import javax.persistence.ElementCollection

@@ -1,6 +1,6 @@
 package grd.kotlin.authapi.dto
 
-import com.chook.api.enums.UserRole
+import grd.kotlin.authapi.enums.UserRole
 import io.swagger.v3.oas.annotations.media.Schema
 import javax.validation.constraints.NotNull
 

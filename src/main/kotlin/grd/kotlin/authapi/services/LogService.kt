@@ -1,9 +1,9 @@
 package grd.kotlin.authapi.services
 
-import com.chook.api.extensions.isNotNull
-import com.chook.api.logging.LogFactory
-import com.chook.api.logging.ILogService
-import com.chook.api.settings.Settings
+import grd.kotlin.authapi.extensions.isNotNull
+import grd.kotlin.authapi.logging.LogFactory
+import grd.kotlin.authapi.logging.ILogService
+import grd.kotlin.authapi.settings.Settings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.annotation.PostConstruct

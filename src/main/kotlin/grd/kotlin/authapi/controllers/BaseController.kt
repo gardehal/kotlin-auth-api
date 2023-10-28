@@ -1,13 +1,13 @@
 package grd.kotlin.authapi.controllers
 
-import com.chook.api.Log
+import grd.kotlin.authapi.Log
 import grd.kotlin.authapi.dto.Converter
 import grd.kotlin.authapi.dto.WrappedResponse
-import com.chook.api.exceptions.*
-import com.chook.api.models.ChookUser
-import com.chook.api.services.BaseService
+import grd.kotlin.authapi.exceptions.*
+import grd.kotlin.authapi.models.ChookUser
+import grd.kotlin.authapi.services.BaseService
 import grd.kotlin.authapi.services.ChookUserService
-import com.chook.api.services.ControllerUtilityService
+import grd.kotlin.authapi.services.ControllerUtilityService
 import com.google.gson.Gson
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter

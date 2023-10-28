@@ -1,6 +1,6 @@
 package grd.kotlin.authapi.extensions
 
-import com.chook.api.enums.*
+import grd.kotlin.authapi.enums.*
 import java.time.*
 import java.util.*
 import kotlin.reflect.KProperty

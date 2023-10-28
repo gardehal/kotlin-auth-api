@@ -1,16 +1,16 @@
 package grd.kotlin.authapi.services
 
-import com.chook.api.exceptions.ArgumentException
-import com.chook.api.exceptions.NotFoundException
-import com.chook.api.models.ChookUser
-import com.chook.api.repositories.FirebaseRepository
+import grd.kotlin.authapi.exceptions.ArgumentException
+import grd.kotlin.authapi.exceptions.NotFoundException
+import grd.kotlin.authapi.models.AUser
+import grd.kotlin.authapi.repositories.FirebaseRepository
 import com.google.cloud.firestore.Query
 import org.springframework.stereotype.Service
 
 @Service
 class JwtService
 {
-    private  var chookUserRepository = FirebaseRepository(ChookUser::class.java)
+    private  var chookUserRepository = FirebaseRepository(AUser::class.java)
 
     /**
      * Find user by email or username
@@ -21,9 +21,9 @@ class JwtService
      * @throws NotFoundException if user not found
      **/
     @Throws(ArgumentException::class, NotFoundException::class)
-    fun findByUsernameEmail(username: String?, email: String? = null): ChookUser
+    fun findByUsernameEmail(username: String?, email: String? = null): AUser
     {
-        var users = emptyList<ChookUser>()
+        var users = emptyList<AUser>()
         if(username.isNullOrEmpty() && email.isNullOrEmpty())
             throw ArgumentException("Enter a username or an email")
         else if(!username.isNullOrEmpty())
