@@ -4,9 +4,9 @@ import grd.kotlin.authapi.Log
 import grd.kotlin.authapi.dto.Converter
 import grd.kotlin.authapi.dto.WrappedResponse
 import grd.kotlin.authapi.exceptions.*
-import grd.kotlin.authapi.models.ChookUser
+import grd.kotlin.authapi.models.AUser
 import grd.kotlin.authapi.services.BaseService
-import grd.kotlin.authapi.services.ChookUserService
+import grd.kotlin.authapi.services.UserService
 import grd.kotlin.authapi.services.ControllerUtilityService
 import com.google.gson.Gson
 import io.swagger.v3.oas.annotations.Operation
@@ -27,7 +27,7 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
     lateinit var controllerUtilityService: ControllerUtilityService
 
     @Autowired
-    lateinit var chookUserService: ChookUserService
+    lateinit var userService: UserService
 
     @Autowired
     lateinit var entityService: TEntityService
@@ -43,12 +43,12 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
         @Valid @RequestBody dto: TEntityDto,
     ): ResponseEntity<WrappedResponse<TEntityDto?>>
     {
-        var editor: ChookUser? = null
+        var editor: AUser? = null
 
         return try
         {
-            editor = chookUserService.getUserFromHeaders(headers)
-            chookUserService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
+            editor = userService.getUserFromHeaders(headers)
+            userService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
 
             val addEntity = Converter.convert(dto, tClass!!)
             val entity = entityService.add(addEntity, editor.id)
@@ -118,13 +118,13 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
         id: String,
     ): ResponseEntity<WrappedResponse<TEntity?>>
     {
-        var editor: ChookUser? = null
+        var editor: AUser? = null
 
         return try
         {
             try
             {
-                editor = chookUserService.getUserFromHeaders(headers)
+                editor = userService.getUserFromHeaders(headers)
             }
             catch(e: NotFoundException) // No editor from token = 400, no entity from get = 200
             {
@@ -134,7 +134,7 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
                     WrappedResponse<TEntity?>(code = code, message = e.message).validated())
             }
 
-            chookUserService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
+            userService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
             val entity = entityService.get(id, true)
 
             val code = 200
@@ -191,12 +191,12 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
         json: String,
     ): ResponseEntity<WrappedResponse<TEntityDto?>>
     {
-        var editor: ChookUser? = null
+        var editor: AUser? = null
 
         return try
         {
-            editor = chookUserService.getUserFromHeaders(headers)
-            chookUserService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
+            editor = userService.getUserFromHeaders(headers)
+            userService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
 
             val merged = entityService.patch(id, json)
             val entity = entityService.update(merged, editor.id)
@@ -222,12 +222,12 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
         id: String,
     ): ResponseEntity<WrappedResponse<Boolean>>
     {
-        var editor: ChookUser? = null
+        var editor: AUser? = null
 
         return try
         {
-            editor = chookUserService.getUserFromHeaders(headers)
-            chookUserService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
+            editor = userService.getUserFromHeaders(headers)
+            userService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
             entityService.delete(id, editor.id)
 
             val code = 200
@@ -251,12 +251,12 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
         id: String,
     ): ResponseEntity<WrappedResponse<Boolean>>
     {
-        var editor: ChookUser? = null
+        var editor: AUser? = null
 
         return try
         {
-            editor = chookUserService.getUserFromHeaders(headers)
-            chookUserService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
+            editor = userService.getUserFromHeaders(headers)
+            userService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
             entityService.restore(id, editor.id)
 
             val code = 200
@@ -280,12 +280,12 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
         id: String,
     ): ResponseEntity<WrappedResponse<Boolean>>
     {
-        var editor: ChookUser? = null
+        var editor: AUser? = null
 
         return try
         {
-            editor = chookUserService.getUserFromHeaders(headers)
-            chookUserService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
+            editor = userService.getUserFromHeaders(headers)
+            userService.actionAllowed(controllerUtilityService.minimumStaffRole, editor)
             entityService.remove(id, editor.id, true)
 
             val code = 200

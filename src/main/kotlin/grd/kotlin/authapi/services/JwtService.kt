@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class JwtService
 {
-    private  var chookUserRepository = FirebaseRepository(AUser::class.java)
+    private  var aUserRepository = FirebaseRepository(AUser::class.java)
 
     /**
      * Find user by email or username
@@ -27,9 +27,9 @@ class JwtService
         if(username.isNullOrEmpty() && email.isNullOrEmpty())
             throw ArgumentException("Enter a username or an email")
         else if(!username.isNullOrEmpty())
-            users = chookUserRepository.getQueried { e: Query -> e.whereEqualTo("username", username) }
+            users = aUserRepository.getQueried { e: Query -> e.whereEqualTo("username", username) }
         else if(!email.isNullOrEmpty())
-            users = chookUserRepository.getQueried { e: Query -> e.whereEqualTo("email", email) }
+            users = aUserRepository.getQueried { e: Query -> e.whereEqualTo("email", email) }
 
         when
         {
