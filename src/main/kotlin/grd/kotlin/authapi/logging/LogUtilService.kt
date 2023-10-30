@@ -101,22 +101,8 @@ class LogUtilService
         val obj = before ?: after
         if(obj!!::class == ApiMetadata::class)
             return LogItemType.DB_METADATA
-        else if(obj::class == ChookUser::class)
+        else if(obj::class == AUser::class)
             return LogItemType.USER
-        else if(obj::class == Ingredient::class)
-            return LogItemType.INGREDIENT
-        else if(obj::class == Recipe::class)
-            return LogItemType.RECIPE
-        else if(obj::class == Course::class)
-            return LogItemType.COURSE
-        else if(obj::class == Meal::class)
-            return LogItemType.MEAL
-        else if(obj::class == Menu::class)
-            return LogItemType.MENU
-        else if(obj::class == Topic::class)
-            return LogItemType.TOPIC
-        else if(obj::class == Article::class)
-            return LogItemType.ARTICLE
 
         throw NotImplementedException("Class was not implemented for logging.")
     }

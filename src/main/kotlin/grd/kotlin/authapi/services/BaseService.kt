@@ -63,7 +63,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
 //        logService.disableLogs = disableLogs
 //        logService.logSink = LogSink.TEXT_FILE
 //        logService.logFileDirectory = "./logs"
-//        logService.logFilePrefix = "ChookApi"
+//        logService.logFilePrefix = "AuthApi"
     }
 
     /**
