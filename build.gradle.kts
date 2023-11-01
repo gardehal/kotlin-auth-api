@@ -1,13 +1,21 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    id("org.springframework.boot") version "3.1.5"
+    id("io.spring.dependency-management") version "1.1.3"
+    kotlin("jvm") version "1.8.22"
+    kotlin("plugin.spring") version "1.8.22"
+}
 
 group = "grd.kotlin"
 version = "0.0.1-SNAPSHOT"
-description = "AuthApi"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
 }
-application {
-    mainClass.set("grd.kotlin.authapi.AuthApiApplicationKt")
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -27,7 +35,8 @@ dependencies {
     implementation("org.owasp:dependency-check-gradle:8.1.2")
     // Firebase
     implementation("com.google.firebase:firebase-admin:9.1.1")
-    implementation("com.google.gms:google-services:4.3.15")
+//    implementation("com.google.gms:google-services:4.3.15")
+    implementation("com.google.gms:google-services:2.1.2")
     // JSON
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2")
@@ -42,6 +51,7 @@ dependencies {
     runtimeOnly("org.reactivestreams:reactive-streams:1.0.4")
     // Test/Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test:2.7.8")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
     testImplementation("io.rest-assured:json-path:5.3.0")
     testImplementation("io.rest-assured:xml-path:5.3.0")
@@ -55,82 +65,13 @@ dependencies {
     testImplementation("com.github.tomakehurst:wiremock-standalone:2.27.2")
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-plugins {
-    application
-    java
-    jacoco
-    id("org.springframework.boot") version "2.7.4"
-    id("io.spring.dependency-management") version "1.0.14.RELEASE"
-    id("org.owasp.dependencycheck") version "7.2.1"
-    kotlin("jvm") version "1.7.10"
-    kotlin("plugin.spring") version "1.7.10"
-}
-
-apply(plugin = "org.owasp.dependencycheck")
-
-tasks {
-    test {
-        useJUnitPlatform()
-        testLogging.showExceptions = true
-    }
-}
-
-// Compile
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += "-Xjsr305=strict"
         jvmTarget = "17"
+    }
 }
 
-tasks.withType<JavaCompile>() {
-    options.encoding = "UTF-8"
-}
-
-// Testing
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-val test by tasks.getting(Test::class) {
-    useJUnitPlatform { }
-}
-
-val testCoverage by tasks.registering {
-    group = "verification"
-    description = "Runs the unit tests with coverage."
-
-    dependsOn(":test", ":jacocoTestReport", ":jacocoTestCoverageVerification")
-    val jacocoTestReport = tasks.findByName("jacocoTestReport")
-    jacocoTestReport?.mustRunAfter(tasks.findByName("test"))
-    tasks.findByName("jacocoTestCoverageVerification")?.mustRunAfter(jacocoTestReport)
-}
-
-tasks.jacocoTestReport {
-    reports {
-        xml.isEnabled = false
-        csv.isEnabled = false
-        html.isEnabled = true
-        html.destination = file("$buildDir/reports/coverage")
-    }
-}
-
-tasks.jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = "0.7".toBigDecimal()
-            }
-        }
-    }
-}
-
-// Build
-tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar>().configureEach {
-    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
-    launchScript()
 }
