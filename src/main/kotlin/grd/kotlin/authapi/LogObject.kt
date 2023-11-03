@@ -1,5 +1,7 @@
 package grd.kotlin.authapi
 
+import io.klogging.logger
+
 object Log
 {
     val main = logger("main")

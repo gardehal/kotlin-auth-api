@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
 
 @RequestMapping("/users")
 @RestController
@@ -35,9 +34,9 @@ class UserController
     suspend fun registerNew(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "User body")
-        @Valid @RequestBody dto: AUserDto,
+        @RequestBody dto: AUserDto,
         @Parameter(description = "Users password")
-        @Valid @RequestParam(value = "password") password: String,
+        @RequestParam(value = "password") password: String,
     ): ResponseEntity<WrappedResponse<AUserDto?>>
     {
         var editor: AUser? = null
@@ -67,7 +66,7 @@ class UserController
     suspend fun getById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @RequestParam(value = "id") id: String,
+        @RequestParam(value = "id") id: String,
     ): ResponseEntity<WrappedResponse<AUserDto?>>
     {
         var editor: AUser? = null
@@ -106,7 +105,7 @@ class UserController
     suspend fun getDetailedById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @RequestParam(value = "id") id: String,
+        @RequestParam(value = "id") id: String,
     ): ResponseEntity<WrappedResponse<AUser?>>
     {
         var editor: AUser? = null
@@ -146,7 +145,7 @@ class UserController
     suspend fun getByUsername(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "Username")
-        @Valid @RequestParam(value = "username") username: String,
+        @RequestParam(value = "username") username: String,
     ): ResponseEntity<WrappedResponse<AUserDto?>>
     {
         var editor: AUser? = null
@@ -228,7 +227,7 @@ class UserController
     suspend fun softDeleteById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @PathVariable(value = "id") id: String,
+        @PathVariable(value = "id") id: String,
     ): ResponseEntity<WrappedResponse<Boolean>>
     {
         var editor: AUser? = null
@@ -258,7 +257,7 @@ class UserController
     suspend fun restoreById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @PathVariable(value = "id") id: String,
+        @PathVariable(value = "id") id: String,
     ): ResponseEntity<WrappedResponse<Boolean>>
     {
         var editor: AUser? = null
@@ -287,7 +286,7 @@ class UserController
     suspend fun removeById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @PathVariable(value = "id") id: String,
+        @PathVariable(value = "id") id: String,
     ): ResponseEntity<WrappedResponse<Boolean>>
     {
         var editor: AUser? = null
@@ -316,9 +315,9 @@ class UserController
         produces = [(MediaType.APPLICATION_JSON_VALUE)])
     suspend fun getToken(
         @Parameter(description = "Username")
-        @Valid @RequestParam(value = "username") username: String,
+        @RequestParam(value = "username") username: String,
         @Parameter(description = "Password")
-        @Valid @RequestParam(value = "password") password: String,
+        @RequestParam(value = "password") password: String,
     ): ResponseEntity<WrappedResponse<String?>>
     {
         // TODO encrypt calls because plaintext passwords?
@@ -345,7 +344,7 @@ class UserController
     suspend fun checkToken(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "Token")
-        @Valid @RequestParam(value = "token") token: String,
+        @RequestParam(value = "token") token: String,
     ): ResponseEntity<WrappedResponse<String?>>
     {
         var editor: AUser? = null
@@ -400,11 +399,11 @@ class UserController
     suspend fun lockUserById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @RequestParam(value = "id") id: String,
+        @RequestParam(value = "id") id: String,
         @Parameter(description = "Lock until DateTime")
-        @Valid @RequestParam(value = "lockUntil") lockUntil: String,
+        @RequestParam(value = "lockUntil") lockUntil: String,
         @Parameter(description = "Lock reason (optional)")
-        @Valid @RequestBody(required = false) reason: String,
+        @RequestBody(required = false) reason: String,
     ): ResponseEntity<WrappedResponse<AUserDto?>>
     {
         var editor: AUser? = null
@@ -436,9 +435,9 @@ class UserController
     suspend fun unlockUserById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @RequestParam(value = "id") id: String,
+        @RequestParam(value = "id") id: String,
         @Parameter(description = "Unlock reason (optional)")
-        @Valid @RequestBody(required = false) reason: String,
+        @RequestBody(required = false) reason: String,
     ): ResponseEntity<WrappedResponse<AUserDto?>>
     {
         var editor: AUser? = null
@@ -470,9 +469,9 @@ class UserController
     suspend fun addModeratorCommentById(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @RequestParam(value = "id") id: String,
+        @RequestParam(value = "id") id: String,
         @Parameter(description = "Moderation comment")
-        @Valid @RequestBody comment: String,
+        @RequestBody comment: String,
     ): ResponseEntity<WrappedResponse<AUserDto?>>
     {
         var editor: AUser? = null
@@ -503,7 +502,7 @@ class UserController
     suspend fun acceptTerms(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "ID")
-        @Valid @RequestParam(value = "id") id: String,
+        @RequestParam(value = "id") id: String,
     ): ResponseEntity<WrappedResponse<Boolean>>
     {
         var editor: AUser? = null

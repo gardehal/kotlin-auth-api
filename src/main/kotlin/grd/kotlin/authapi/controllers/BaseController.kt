@@ -19,7 +19,6 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.concurrent.TimeUnit
-import javax.validation.Valid
 
 open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseService<TEntity>>(var tClass: Class<TEntity>?, var tDtoClass: Class<TEntityDto>?)
 {
@@ -40,7 +39,7 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
     open suspend fun add(
         @RequestHeader headers: Map<String, String>,
         @Parameter(description = "Ingredient body")
-        @Valid @RequestBody dto: TEntityDto,
+        @RequestBody dto: TEntityDto,
     ): ResponseEntity<WrappedResponse<TEntityDto?>>
     {
         var editor: AUser? = null
@@ -186,7 +185,6 @@ open class BaseController<TEntity: Any, TEntityDto : Any, TEntityService: BaseSe
         @PathVariable("id")
         id: String,
         @Parameter(description = "Values to patch")
-        @Valid
         @RequestBody
         json: String,
     ): ResponseEntity<WrappedResponse<TEntityDto?>>
