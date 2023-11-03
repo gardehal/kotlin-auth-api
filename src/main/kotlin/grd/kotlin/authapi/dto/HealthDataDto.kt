@@ -17,12 +17,6 @@ data class HealthDataDto(
     @Schema(description = "Call to database Firebase in in duration it took to respond")
     var dbCallFirebase: Duration? = null,
 
-    @Schema(description = "Call to scraper target NRK in duration it took to respond")
-    var scraperCallNrk: Duration? = null,
-
-    @Schema(description = "Call to scraper target Kolonial in duration it took to respond")
-    var scraperCallKolonial: Duration? = null,
-
     @Schema(description = "Health messages")
     var messages: MutableList<String>? = null,
 )

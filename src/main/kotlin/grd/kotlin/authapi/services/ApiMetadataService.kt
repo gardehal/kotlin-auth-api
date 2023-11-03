@@ -17,13 +17,7 @@ import javax.annotation.PostConstruct
 class ApiMetadataService : BaseService<ApiMetadata>(ApiMetadata::class.java, true)
 {
     @Autowired
-    private lateinit var ingredientService: IngredientService
-
-    @Autowired
-    private lateinit var recipeService: RecipeService
-
-    @Autowired
-    private lateinit var scraperService: ScraperService
+    private lateinit var userService: UserService
 
     @Autowired
     lateinit var settings: Settings
@@ -46,8 +40,7 @@ class ApiMetadataService : BaseService<ApiMetadata>(ApiMetadata::class.java, tru
         val nowString = Instant.now().toString()
 
         metadata.updatedTime = nowString
-        metadata.totalIngredients = ingredientService.getAll().toList().size
-        metadata.totalRecipes = recipeService.getAll().toList().size
+        metadata.totalUsers = userService.getAll().toList().size
 
         return metadata
     }
@@ -64,8 +57,6 @@ class ApiMetadataService : BaseService<ApiMetadata>(ApiMetadata::class.java, tru
         val apiUpDateTime = apiUpDateTime
         val uptimeDuration = Duration.between(nowDateTime, apiUpDateTime)
         var responseFirebaseDuration: Duration? = null
-        var responseNrkDuration: Duration? = null
-        var responseKolonialDuration: Duration? = null
 
         try
         {
@@ -80,43 +71,9 @@ class ApiMetadataService : BaseService<ApiMetadata>(ApiMetadata::class.java, tru
             messages.add("Failed to contact database Firebase: ${e.message}")
         }
 
-        try
-        {
-            val responseStart = Instant.now()
-            val target = settings.env.urlNrk!!
-            val isOnline = scraperService.isOnline(target)
-            if(!isOnline)
-                throw NotFoundException("Response code was not 200.")
-
-            val responseEnd = Instant.now()
-            responseNrkDuration = Duration.between(responseStart, responseEnd)
-        }
-        catch(e: Exception)
-        {
-            Log.main.info("NRK was not online, {function}", this.toString())
-            messages.add("Failed to contact scraper target NRK: ${e.message}")
-        }
-
-        try
-        {
-            val responseStart = Instant.now()
-            val target = settings.env.urlKolonial!!
-            val isOnline = scraperService.isOnline(target)
-            if(!isOnline)
-                throw NotFoundException("Response code was not 200.")
-
-            val responseEnd = Instant.now()
-            responseKolonialDuration = Duration.between(responseStart, responseEnd)
-        }
-        catch(e: Exception)
-        {
-            Log.main.info("Kolonial/Oda was not online, {function}", this.toString())
-            messages.add("Failed to contact scraper target Kolonial: ${e.message}")
-        }
-
         if(!messages.any())
             messages.add("No errors.")
 
-        return HealthDataDto(nowDateTime, apiUpDateTime, uptimeDuration, responseFirebaseDuration, responseNrkDuration, responseKolonialDuration, messages)
+        return HealthDataDto(nowDateTime, apiUpDateTime, uptimeDuration, responseFirebaseDuration, messages)
     }
 }

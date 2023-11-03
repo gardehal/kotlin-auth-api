@@ -1,10 +1,10 @@
 package grd.kotlin.authapi.services
 
+import com.google.cloud.firestore.Query
 import grd.kotlin.authapi.exceptions.ArgumentException
 import grd.kotlin.authapi.exceptions.NotFoundException
 import grd.kotlin.authapi.models.AUser
 import grd.kotlin.authapi.repositories.FirebaseRepository
-import com.google.cloud.firestore.Query
 import org.springframework.stereotype.Service
 
 @Service

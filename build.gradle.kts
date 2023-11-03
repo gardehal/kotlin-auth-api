@@ -8,7 +8,7 @@ java {
 }
 
 application {
-    mainClass.set("com.chook.api.ChookApiKt")
+    mainClass.set("grd.kotlin.authapi.AuthApiApplicationKt")
 }
 
 dependencies {

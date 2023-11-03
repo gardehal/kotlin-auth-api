@@ -1,8 +1,8 @@
 package grd.kotlin.authapi.logging
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import grd.kotlin.authapi.extensions.isNull
 import grd.kotlin.authapi.settings.Settings
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.io.File

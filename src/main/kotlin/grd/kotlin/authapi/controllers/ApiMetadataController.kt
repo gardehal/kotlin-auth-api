@@ -3,13 +3,11 @@ package grd.kotlin.authapi.controllers
 import grd.kotlin.authapi.Log
 import grd.kotlin.authapi.dto.*
 import grd.kotlin.authapi.exceptions.*
-import grd.kotlin.authapi.models.ApiMetadata
 import grd.kotlin.authapi.models.AUser
+import grd.kotlin.authapi.models.ApiMetadata
 import grd.kotlin.authapi.services.ApiMetadataService
-import grd.kotlin.authapi.services.UserService
 import grd.kotlin.authapi.services.ControllerUtilityService
-import grd.kotlin.authapi.dto.Converter
-import grd.kotlin.authapi.dto.WrappedResponse
+import grd.kotlin.authapi.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.CacheControl

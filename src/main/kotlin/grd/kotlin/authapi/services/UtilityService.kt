@@ -1,12 +1,12 @@
 package grd.kotlin.authapi.services
 
-import grd.kotlin.authapi.enums.*
-import grd.kotlin.authapi.exceptions.*
-import grd.kotlin.authapi.extensions.isNull
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.fge.jsonpatch.JsonPatch
 import com.github.fge.jsonpatch.JsonPatchException
+import grd.kotlin.authapi.enums.*
+import grd.kotlin.authapi.exceptions.*
+import grd.kotlin.authapi.extensions.isNull
 import org.springframework.stereotype.Service
 import java.time.*
 import java.util.*

@@ -1,5 +1,6 @@
 package grd.kotlin.authapi.services
 
+import com.google.cloud.firestore.Query
 import grd.kotlin.authapi.Log
 import grd.kotlin.authapi.dto.AUserDto
 import grd.kotlin.authapi.dto.Converter
@@ -12,7 +13,6 @@ import grd.kotlin.authapi.extensions.isNull
 import grd.kotlin.authapi.jwt.JwtUtil
 import grd.kotlin.authapi.models.AUser
 import grd.kotlin.authapi.settings.Settings
-import com.google.cloud.firestore.Query
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -320,8 +320,6 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
         user.previousUsernames = mutableMapOf()
         user.usernameChangeTime = Instant.now().toString()
         user.password = passwordEncoder().encode(password)
-        user.ingredientsRegistered = 0
-        user.recipesRegistered = 0
         user.moderatorComments = mutableMapOf()
 
         // username, email must be unique
@@ -419,34 +417,6 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
         map[Instant.now().toString()] = "${user.id}: $newValue"
 
         user.moderatorComments = map
-        return user
-    }
-
-    /**
-     * Increment/decrement ingredients registered by user
-     * @param user user to update
-     * @param change +/- change to apply
-     * @return User updated user object
-     * @throws none
-     **/
-    fun setUserRegisteredIngredients(user: AUser, change: Int): AUser
-    {
-        val newValue = (user.ingredientsRegistered) + change
-        user.ingredientsRegistered = newValue
-        return user
-    }
-
-    /**
-     * Increment/decrement recipes registered by user
-     * @param user user to update
-     * @param change +/- change to apply
-     * @return User updated user object
-     * @throws none
-     **/
-    fun setUserRegisteredRecipes(user: AUser, change: Int): AUser
-    {
-        val newValue = (user.recipesRegistered) + change
-        user.recipesRegistered = newValue
         return user
     }
 

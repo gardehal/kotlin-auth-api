@@ -1,7 +1,6 @@
 package grd.kotlin.authapi.logging
 
 import grd.kotlin.authapi.exceptions.NotImplementedException
-import kotlin.jvm.Throws
 import kotlin.reflect.KFunction1
 import kotlin.reflect.KFunction2
 import kotlin.reflect.KProperty

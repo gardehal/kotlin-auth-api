@@ -1,10 +1,5 @@
 package grd.kotlin.authapi.repositories
 
-import grd.kotlin.authapi.exceptions.ArgumentException
-import grd.kotlin.authapi.exceptions.NotImplementedException
-import grd.kotlin.authapi.exceptions.TestEnvironmentException
-import grd.kotlin.authapi.interfaces.RepositoryInterface
-import grd.kotlin.authapi.settings.Settings
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.Firestore
@@ -13,6 +8,11 @@ import com.google.cloud.firestore.QuerySnapshot
 import com.google.common.reflect.TypeToken
 import com.google.firebase.cloud.FirestoreClient
 import com.google.gson.Gson
+import grd.kotlin.authapi.exceptions.ArgumentException
+import grd.kotlin.authapi.exceptions.NotImplementedException
+import grd.kotlin.authapi.exceptions.TestEnvironmentException
+import grd.kotlin.authapi.interfaces.RepositoryInterface
+import grd.kotlin.authapi.settings.Settings
 import org.springframework.beans.support.PagedListHolder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
