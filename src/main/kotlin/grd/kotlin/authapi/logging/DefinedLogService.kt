@@ -52,11 +52,11 @@ class DefinedLogService: ILogService
         if(declaredLogLevel.value < 1 || declaredLogLevel.value > logLevel.value)
             return null
 
-        var changes = changes
-        if(changes.isNull())
-            changes = logUtilService.getChanges(before, after)
+        var incomingChanges = changes
+        if(incomingChanges.isNull())
+            incomingChanges = logUtilService.getChanges(before, after)
 
-        val logHead = logUtilService.createLogHeadAndLines(before, after, itemId, editorId, automatedChange, changes!!)
+        val logHead = logUtilService.createLogHeadAndLines(before, after, itemId, editorId, automatedChange, incomingChanges!!)
         return definedLogChangesMethod!!.invoke(logHead)
     }
 
