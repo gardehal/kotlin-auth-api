@@ -119,11 +119,11 @@ class JsonLogService: ILogService
 
         try
         {
-            var changes = changes
-            if(changes.isNull())
-                changes = logUtilService.getChanges(before, after)
+            var incomingChanges = changes
+            if(incomingChanges.isNull())
+                incomingChanges = logUtilService.getChanges(before, after)
 
-            val logHead = logUtilService.createLogHeadAndLines(before, after, itemId, editorId, automatedChange, changes!!)
+            val logHead = logUtilService.createLogHeadAndLines(before, after, itemId, editorId, automatedChange, incomingChanges!!)
             if(saveLogHead(logHead))
                 return logHead
         }

@@ -86,11 +86,36 @@ tasks.withType<KotlinCompile> {
     }
 }
 
+tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar>().configureEach {
+    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
+    launchScript()
+}
+
+// Testing
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.7".toBigDecimal()
+            }
+        }
+    }
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar>().configureEach {
-    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
-    launchScript()
+val test by tasks.getting(Test::class) {
+    useJUnitPlatform { }
+}
+
+val testCoverage by tasks.registering {
+    group = "verification"
+    description = "Runs the unit tests with coverage."
+
+    dependsOn(":test", ":jacocoTestReport", ":jacocoTestCoverageVerification")
+    val jacocoTestReport = tasks.findByName("jacocoTestReport")
+    jacocoTestReport?.mustRunAfter(tasks.findByName("test"))
+    tasks.findByName("jacocoTestCoverageVerification")?.mustRunAfter(jacocoTestReport)
 }
