@@ -28,3 +28,5 @@ Authentication API for various other projects.
 - Web 
     - Small interface for login, simple user info
 - Ansible and hosting on server
+- Later:
+  - Put logging and basics (BaseX, enums, exceptions, annotations etc.) in packages (1 for logging, 1 for basics)
