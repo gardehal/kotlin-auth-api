@@ -1,7 +1,6 @@
 package grd.kotlin.authapi
 
 import grd.kotlin.authapi.jwt.JwtRequestFilter
-import grd.kotlin.authapi.settings.Settings
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -17,11 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Primary
 @Configuration
 @EnableWebSecurity
-open class WebSecurityConfig
+open class SecurityConfiguration
 {
-    @Autowired
-    private lateinit var settings: Settings
-
     @Autowired
     private lateinit var jwtRequestFilter: JwtRequestFilter
 
@@ -32,30 +28,28 @@ open class WebSecurityConfig
         // Filter JWT requests
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
 
+        http.authorizeHttpRequests() {c -> c.requestMatchers(HttpMethod.GET, "/").permitAll()}
+
         http
-            .authorizeRequests()
+            .authorizeHttpRequests { request ->
                 // Redirects, defaults
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET, "/swagger").permitAll()
+                request.requestMatchers(HttpMethod.GET, "/").permitAll()
+                request.requestMatchers(HttpMethod.GET, "/swagger").permitAll()
                 // Swagger GUI
-                .antMatchers("/v3/api-docs/**").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
+                request.requestMatchers("/v3/api-docs/**").permitAll()
+                request.requestMatchers("/swagger-ui/**").permitAll()
                 // User
-                .antMatchers(HttpMethod.GET, "/user/getToken**").permitAll()
+                request.requestMatchers(HttpMethod.GET, "/user/getToken**").permitAll()
                 // Metadata
-                .antMatchers(HttpMethod.GET, "/meta/").permitAll()
+                request.requestMatchers(HttpMethod.GET, "/meta/").permitAll()
                 // None - Require any other request have authentication
-                .anyRequest()
+                request.anyRequest()
                     .authenticated()
-//                    .permitAll() // TESTING ONLY
-            .and()
-                .cors()
-            .and()
-                .csrf()
-                    .disable() // Disabled due to JWT usage
-//            .and()
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                    .permitAll() // FOR TESTING ONLY
+            }
+            .cors { }
+            .csrf { e -> e.disable() } // Disabled due to JWT
+            .sessionManagement { e -> e.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
 
         return@runBlocking http.build()
     }
