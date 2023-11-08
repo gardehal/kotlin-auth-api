@@ -28,8 +28,6 @@ open class SecurityConfiguration
         // Filter JWT requests
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
 
-        http.authorizeHttpRequests() {c -> c.requestMatchers(HttpMethod.GET, "/").permitAll()}
-
         http
             .authorizeHttpRequests { request ->
                 // Redirects, defaults

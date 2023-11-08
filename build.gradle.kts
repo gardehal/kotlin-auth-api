@@ -15,6 +15,7 @@ dependencies {
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.4")
     implementation("org.springframework.boot:spring-boot-starter-web:3.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.0.4")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.0.4")
     implementation("org.springframework.security:spring-security-core:6.1.5")
     implementation("org.springdoc:springdoc-openapi-data-rest:1.6.15")
