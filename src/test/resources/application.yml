@@ -1,0 +1,51 @@
+# Spring
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+# Server Properties
+server:
+  host: localhost
+  port: 9001
+  authenticationHeader: authorization
+
+# Project info
+project:
+  basePackage: grd.kotlin.authapi
+  creator: gardehal
+  url: https://github.com/gardehal
+  email: alex.thogar@gmail.com
+  title: Chook API TEST
+  desc: TEST BUILD
+  version: 0.0.0
+  isTest: true
+  resourceDir: test
+
+# JWT
+jwt:
+  validity: 86400000 # 1000 * 60 * 60 * 24: 24 hours in milliseconds
+  issuer: CHOOK.API
+  # Note, trailing space on purpose
+  tokenPrefix: "Bearer "
+
+# Logging events, changes to entities
+logging:
+  logSink: JSON
+  logLevel: NONE
+  disableLogRotation: true
+  logFileRotatePeriodInDays: 30
+  logFileDirectory: ./testlogs
+  logFilePrefix: ChookApi-TEST
+  logFileExtension: json

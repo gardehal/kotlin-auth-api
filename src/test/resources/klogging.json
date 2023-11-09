@@ -1,0 +1,16 @@
+{
+  "sinks": {
+  },
+  "logging": [
+    {
+      "levelRanges": [
+        {
+          "levels": "TRACE DEBUG INFO WARN ERROR FATAL",
+          "fromMinLevel": "FATAL",
+          "toSinks": [
+          ]
+        }
+      ]
+    }
+  ]
+}
