@@ -42,7 +42,7 @@ class AUserServiceUnitTests
     private lateinit var logService: LogService // Note: For BaseService
 
     @Mock
-    private lateinit var chookUserRepository: FirebaseRepository<AUser>
+    private lateinit var userRepository: FirebaseRepository<AUser>
 
     @Mock
     private lateinit var settings: Settings
@@ -64,7 +64,7 @@ class AUserServiceUnitTests
         utilityService = mock(UtilityService::class.java)
         logService = mock(LogService::class.java)
         @Suppress("UNCHECKED_CAST")
-        chookUserRepository = mock(FirebaseRepository::class.java) as FirebaseRepository<AUser>
+        userRepository = mock(FirebaseRepository::class.java) as FirebaseRepository<AUser>
         settings = mock(Settings::class.java)
         jwtUtil = mock(JwtUtil::class.java)
         MockitoAnnotations.openMocks(this)

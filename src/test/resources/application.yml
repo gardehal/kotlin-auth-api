@@ -27,7 +27,7 @@ project:
   creator: gardehal
   url: https://github.com/gardehal
   email: alex.thogar@gmail.com
-  title: Chook API TEST
+  title: Auth API TEST
   desc: TEST BUILD
   version: 0.0.0
   isTest: true
@@ -36,7 +36,7 @@ project:
 # JWT
 jwt:
   validity: 86400000 # 1000 * 60 * 60 * 24: 24 hours in milliseconds
-  issuer: CHOOK.API
+  issuer: AUTH.API
   # Note, trailing space on purpose
   tokenPrefix: "Bearer "
 
@@ -47,5 +47,5 @@ logging:
   disableLogRotation: true
   logFileRotatePeriodInDays: 30
   logFileDirectory: ./testlogs
-  logFilePrefix: ChookApi-TEST
+  logFilePrefix: AuthApi-TEST
   logFileExtension: json

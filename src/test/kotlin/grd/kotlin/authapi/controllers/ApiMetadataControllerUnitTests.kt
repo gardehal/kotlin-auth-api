@@ -35,7 +35,7 @@ class ApiMetadataControllerUnitTests
     private lateinit var apiMetadataService: ApiMetadataService
 
     @Mock
-    private lateinit var chookUserService: UserService
+    private lateinit var userService: UserService
 
     @Mock
     private lateinit var utilityService: UtilityService
@@ -45,7 +45,7 @@ class ApiMetadataControllerUnitTests
     {
         controllerUtilityService = mock(ControllerUtilityService::class.java)
         apiMetadataService = mock(ApiMetadataService::class.java)
-        chookUserService = mock(UserService::class.java)
+        userService = mock(UserService::class.java)
         utilityService = mock(UtilityService::class.java)
         MockitoAnnotations.openMocks(this)
 
@@ -140,8 +140,8 @@ class ApiMetadataControllerUnitTests
         val updated = metadata.copy()
         val expectedCode = 200
 
-        lenient().`when`(chookUserService.getUserFromHeaders(MockitoHelper.anyObject())).thenReturn(editor)
-        lenient().`when`(chookUserService.actionAllowed(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(true)
+        lenient().`when`(userService.getUserFromHeaders(MockitoHelper.anyObject())).thenReturn(editor)
+        lenient().`when`(userService.actionAllowed(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(true)
         lenient().`when`(apiMetadataService.setData(MockitoHelper.anyObject(), anyString())).thenReturn(updated)
         lenient().`when`(apiMetadataService.update(MockitoHelper.anyObject(), anyString(), anyBoolean(), anyBoolean())).thenReturn(updated)
 
@@ -159,7 +159,7 @@ class ApiMetadataControllerUnitTests
         val headers = mapOf(Pair(authorizationFieldName, "valid-token"))
         val expectedCode = 500
 
-        lenient().`when`(chookUserService.getUserFromHeaders(MockitoHelper.anyObject())).thenThrow(NullPointerException("mocked"))
+        lenient().`when`(userService.getUserFromHeaders(MockitoHelper.anyObject())).thenThrow(NullPointerException("mocked"))
         lenient().`when`(controllerUtilityService.getErrorHttpReturn(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), anyInt()))
             .thenReturn(HttpReturn(expectedCode, "mocked"))
 
