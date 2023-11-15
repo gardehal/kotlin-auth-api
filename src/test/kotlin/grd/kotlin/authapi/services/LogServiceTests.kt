@@ -1,11 +1,21 @@
-package grd.kotlin.authapi
+package grd.kotlin.authapi.services
 
-import grd.kotlin.authapi.services.LogService
+import grd.kotlin.authapi.MockitoHelper
+import grd.kotlin.authapi.exceptions.NotImplementedException
+import grd.kotlin.authapi.logging.LogEvent
+import grd.kotlin.authapi.logging.LogHead
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.io.File
+import java.nio.file.Paths
+import java.time.Instant
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class, MockitoExtension::class)
@@ -433,7 +443,9 @@ class LogServiceTests
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(listOf(file)).`when`(spy).getAllLogFiles()
-//        Mockito.lenient().doReturn(null).`when`(spy).censureLogChangesTextFile(MockitoHelper.anyObject(), MockitoHelper.anyObject(), Mockito.anyString()) // Return value not important
+//        Mockito.lenient().doReturn(null).`when`(spy).censureLogChangesTextFile(
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject(), Mockito.anyString()) // Return value not important
 //
 //        val result = spy.censureLogChangesText(properties, itemId)
 //
@@ -567,8 +579,8 @@ class LogServiceTests
 //    {
 //        logService.logSink = LogSink.DEFINED
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -577,7 +589,10 @@ class LogServiceTests
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(logHead).`when`(spy).getLogData(
-//            MockitoHelper.anyObject(), MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(), MockitoHelper.anyObject())
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(),
+//            MockitoHelper.anyObject()
+//        )
 //
 //        try
 //        {
@@ -596,8 +611,8 @@ class LogServiceTests
 //        logService.logSink = LogSink.TEXT_FILE
 //        logService.disableLogs = true
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -613,11 +628,11 @@ class LogServiceTests
 //    {
 //        logService.logSink = LogSink.TEXT_FILE
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val editorId = "editor1"
 //        val automatedChange = false
-//        val changes = listOf<KProperty1<out ChookUser, *>>()
+//        val changes = listOf<KProperty1<out AUser, *>>()
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(changes).`when`(spy).getChanges(MockitoHelper.anyObject(), MockitoHelper.anyObject())
@@ -632,8 +647,8 @@ class LogServiceTests
 //    {
 //        logService.logSink = LogSink.TEXT_FILE
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -643,7 +658,10 @@ class LogServiceTests
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(changes).`when`(spy).getChanges(MockitoHelper.anyObject(), MockitoHelper.anyObject())
 //        Mockito.lenient().doReturn(logHead).`when`(spy).getLogData(
-//            MockitoHelper.anyObject(), MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(), MockitoHelper.anyObject())
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(),
+//            MockitoHelper.anyObject()
+//        )
 //        Mockito.lenient().doReturn("log as string").`when`(spy).logChangesText(MockitoHelper.anyObject())
 //
 //        val result = spy.logChanges(before, after, itemId, editorId, automatedChange)
@@ -657,8 +675,8 @@ class LogServiceTests
 //    {
 //        logService.logSink = LogSink.TEXT_FILE
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -678,7 +696,10 @@ class LogServiceTests
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(logHead).`when`(spy).getLogData(
-//            MockitoHelper.anyObject(), MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(), MockitoHelper.anyObject())
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(),
+//            MockitoHelper.anyObject()
+//        )
 //        Mockito.lenient().doReturn("log as string").`when`(spy).logChangesText(MockitoHelper.anyObject())
 //
 //        val result = spy.logChanges(before, after, itemId, editorId, automatedChange, changes)
@@ -703,8 +724,8 @@ class LogServiceTests
 //        logService.logSink = LogSink.DEFINED
 //        logService.definedLogChangesMethod = null
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -724,7 +745,10 @@ class LogServiceTests
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(logHead).`when`(spy).getLogData(
-//            MockitoHelper.anyObject(), MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(), MockitoHelper.anyObject())
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(),
+//            MockitoHelper.anyObject()
+//        )
 //        Mockito.lenient().doReturn("log as string").`when`(spy).logChangesText(MockitoHelper.anyObject())
 //
 //        try
@@ -745,8 +769,8 @@ class LogServiceTests
 //        logService.logSink = LogSink.DEFINED
 //        logService.definedLogChangesMethod = ::myChangesLogging
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -766,7 +790,10 @@ class LogServiceTests
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(logHead).`when`(spy).getLogData(
-//            MockitoHelper.anyObject(), MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(), MockitoHelper.anyObject())
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject(), Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean(),
+//            MockitoHelper.anyObject()
+//        )
 //        Mockito.lenient().doReturn("log as string").`when`(spy).logChangesText(MockitoHelper.anyObject())
 //
 //        val directoryBefore = File(logService.logFileDirectory).listFiles()
@@ -1148,8 +1175,8 @@ class LogServiceTests
 //    fun testGetLogChangesString_NormalAutomated_ReturnString()
 //    {
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = true
@@ -1188,8 +1215,8 @@ class LogServiceTests
 //    fun testGetLogChangesString_NormalManual_ReturnString()
 //    {
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -1262,8 +1289,8 @@ class LogServiceTests
 //    fun testGetLogData_NoChanges_ThrowArgumentException()
 //    {
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username1")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username1")
 //        val editorId = "editor1"
 //        val automatedChange = false
 //        val changes = listOf<KProperty<*>>()
@@ -1283,8 +1310,8 @@ class LogServiceTests
 //    fun testGetLogData_NormalSingle_ReturnLogHead()
 //    {
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1")
-//        val after = ChookUser(id = itemId, username = "username2")
+//        val before = AUser(id = itemId, username = "username1")
+//        val after = AUser(id = itemId, username = "username2")
 //        val propertyName = "username"
 //        val editorId = "editor1"
 //        val automatedChange = false
@@ -1293,11 +1320,23 @@ class LogServiceTests
 //        val itemType = LogItemType.USER
 //
 //        val spy = Mockito.spy(logService)
-//        Mockito.lenient().doReturn(operation).`when`(spy).getOperation(MockitoHelper.anyObject(), MockitoHelper.anyObject())
-//        Mockito.lenient().doReturn(itemType).`when`(spy).getLogItemType(MockitoHelper.anyObject(), MockitoHelper.anyObject())
+//        Mockito.lenient().doReturn(operation).`when`(spy).getOperation(
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject()
+//        )
+//        Mockito.lenient().doReturn(itemType).`when`(spy).getLogItemType(
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject()
+//        )
 //        Mockito.lenient().doReturn(propertyName).`when`(spy).getPropertiesUpdated(MockitoHelper.anyObject())
-//        Mockito.lenient().doReturn(before.username).`when`(spy).getLogProperty(MockitoHelper.safeEq(before), MockitoHelper.anyObject())
-//        Mockito.lenient().doReturn(after.username).`when`(spy).getLogProperty(MockitoHelper.safeEq(after), MockitoHelper.anyObject())
+//        Mockito.lenient().doReturn(before.username).`when`(spy).getLogProperty(
+//            MockitoHelper.safeEq(before),
+//            MockitoHelper.anyObject()
+//        )
+//        Mockito.lenient().doReturn(after.username).`when`(spy).getLogProperty(
+//            MockitoHelper.safeEq(after),
+//            MockitoHelper.anyObject()
+//        )
 //
 //        val result = spy.getLogData(before, after, itemId, editorId, automatedChange, changes)
 //
@@ -1319,8 +1358,8 @@ class LogServiceTests
 //    fun testGetLogData_NormalMultiple_ReturnLogHead()
 //    {
 //        val itemId = "id1"
-//        val before = ChookUser(id = itemId, username = "username1", email = "malformed")
-//        val after = ChookUser(id = itemId, username = "username2", email = "example@example.com")
+//        val before = AUser(id = itemId, username = "username1", email = "malformed")
+//        val after = AUser(id = itemId, username = "username2", email = "example@example.com")
 //        val propertyName1 = "username"
 //        val propertyName2 = "email"
 //        val propertiesUpdated = "${propertyName1}, $propertyName2"
@@ -1331,13 +1370,31 @@ class LogServiceTests
 //        val itemType = LogItemType.USER
 //
 //        val spy = Mockito.spy(logService)
-//        Mockito.lenient().doReturn(operation).`when`(spy).getOperation(MockitoHelper.anyObject(), MockitoHelper.anyObject())
-//        Mockito.lenient().doReturn(itemType).`when`(spy).getLogItemType(MockitoHelper.anyObject(), MockitoHelper.anyObject())
+//        Mockito.lenient().doReturn(operation).`when`(spy).getOperation(
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject()
+//        )
+//        Mockito.lenient().doReturn(itemType).`when`(spy).getLogItemType(
+//            MockitoHelper.anyObject(),
+//            MockitoHelper.anyObject()
+//        )
 //        Mockito.lenient().doReturn(propertiesUpdated).`when`(spy).getPropertiesUpdated(MockitoHelper.anyObject())
-//        Mockito.lenient().doReturn(before.username).`when`(spy).getLogProperty(MockitoHelper.safeEq(before), MockitoHelper.safeEq(propertyName1))
-//        Mockito.lenient().doReturn(after.username).`when`(spy).getLogProperty(MockitoHelper.safeEq(after), MockitoHelper.safeEq(propertyName1))
-//        Mockito.lenient().doReturn(before.email).`when`(spy).getLogProperty(MockitoHelper.safeEq(before), MockitoHelper.safeEq(propertyName2))
-//        Mockito.lenient().doReturn(after.email).`when`(spy).getLogProperty(MockitoHelper.safeEq(after), MockitoHelper.safeEq(propertyName2))
+//        Mockito.lenient().doReturn(before.username).`when`(spy).getLogProperty(
+//            MockitoHelper.safeEq(before),
+//            MockitoHelper.safeEq(propertyName1)
+//        )
+//        Mockito.lenient().doReturn(after.username).`when`(spy).getLogProperty(
+//            MockitoHelper.safeEq(after),
+//            MockitoHelper.safeEq(propertyName1)
+//        )
+//        Mockito.lenient().doReturn(before.email).`when`(spy).getLogProperty(
+//            MockitoHelper.safeEq(before),
+//            MockitoHelper.safeEq(propertyName2)
+//        )
+//        Mockito.lenient().doReturn(after.email).`when`(spy).getLogProperty(
+//            MockitoHelper.safeEq(after),
+//            MockitoHelper.safeEq(propertyName2)
+//        )
 //
 //        val result = spy.getLogData(before, after, itemId, editorId, automatedChange, changes)
 //
@@ -1363,8 +1420,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetChanges_BeforeNullAfterNull_ThrowArgumentException()
 //    {
-//        val before: ChookUser? = null
-//        val after: ChookUser? = null
+//        val before: AUser? = null
+//        val after: AUser? = null
 //
 //        try
 //        {
@@ -1380,7 +1437,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetChanges_DifferentClass_ThrowArgumentException()
 //    {
-//        val before = ChookUser(id = "id1")
+//        val before = AUser(id = "id1")
 //        val after = Recipe(id = "id1")
 //
 //        try
@@ -1417,8 +1474,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetChanges_Equal_ReturnEmptyList()
 //    {
-//        val before = ChookUser(id = "id1")
-//        val after = ChookUser(id = "id1")
+//        val before = AUser(id = "id1")
+//        val after = AUser(id = "id1")
 //
 //        val result = logService.getChanges(before, after)
 //
@@ -1429,16 +1486,28 @@ class LogServiceTests
 //    @Test
 //    fun testGetChanges_AnnotatedIgnore_ReturnKPropertyList()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1", moderatorComments = mutableMapOf())
-//        val after = ChookUser(id = "id1", username = "username2", moderatorComments = mutableMapOf(Pair("datetime", "comment")))
+//        val before = AUser(id = "id1", username = "username1", moderatorComments = mutableMapOf())
+//        val after = AUser(id = "id1", username = "username2", moderatorComments = mutableMapOf(Pair("datetime", "comment")))
 //        val propertyName1 = "username"
 //        val propertyName2 = "moderatorComments"
 //
 //        val spy = Mockito.spy(logService)
-//        Mockito.lenient().doReturn(before.username).`when`(spy).getProperty(MockitoHelper.safeEq(before), MockitoHelper.safeEq(propertyName1))
-//        Mockito.lenient().doReturn(after.username).`when`(spy).getProperty(MockitoHelper.safeEq(after), MockitoHelper.safeEq(propertyName1))
-//        Mockito.lenient().doReturn(before.moderatorComments).`when`(spy).getProperty(MockitoHelper.safeEq(before), MockitoHelper.safeEq(propertyName2))
-//        Mockito.lenient().doReturn(after.moderatorComments).`when`(spy).getProperty(MockitoHelper.safeEq(after), MockitoHelper.safeEq(propertyName2))
+//        Mockito.lenient().doReturn(before.username).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(before),
+//            MockitoHelper.safeEq(propertyName1)
+//        )
+//        Mockito.lenient().doReturn(after.username).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(after),
+//            MockitoHelper.safeEq(propertyName1)
+//        )
+//        Mockito.lenient().doReturn(before.moderatorComments).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(before),
+//            MockitoHelper.safeEq(propertyName2)
+//        )
+//        Mockito.lenient().doReturn(after.moderatorComments).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(after),
+//            MockitoHelper.safeEq(propertyName2)
+//        )
 //
 //        val annotation = before::class.memberProperties.first { it.name == propertyName2 }.javaField!!.getDeclaredAnnotation(NotLogged::class.java)
 //        Assertions.assertNotNull(annotation)
@@ -1456,8 +1525,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetChanges_ObjectAdded_ReturnKPropertyList()
 //    {
-//        val before: ChookUser? = null
-//        val after = ChookUser(id = "id1", username = "username1", email = "example@example.com")
+//        val before: AUser? = null
+//        val after = AUser(id = "id1", username = "username1", email = "example@example.com")
 //        val expected = after::class.memberProperties.toList()
 //
 //        val result = logService.getChanges(before, after)
@@ -1469,8 +1538,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetChanges_ObjectDeleted_ReturnKPropertyList()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1", email = "example@example.com")
-//        val after: ChookUser? = null
+//        val before = AUser(id = "id1", username = "username1", email = "example@example.com")
+//        val after: AUser? = null
 //        val expected = before::class.memberProperties.toList()
 //
 //        val result = logService.getChanges(before, after)
@@ -1482,16 +1551,28 @@ class LogServiceTests
 //    @Test
 //    fun testGetChanges_Normal_ReturnKPropertyList()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1", email = "example@example.com")
-//        val after = ChookUser(id = "id1", username = "username2", email = "some_other_example@example.com")
+//        val before = AUser(id = "id1", username = "username1", email = "example@example.com")
+//        val after = AUser(id = "id1", username = "username2", email = "some_other_example@example.com")
 //        val propertyName1 = "username"
 //        val propertyName2 = "email"
 //
 //        val spy = Mockito.spy(logService)
-//        Mockito.lenient().doReturn(before.username).`when`(spy).getProperty(MockitoHelper.safeEq(before), MockitoHelper.safeEq(propertyName1))
-//        Mockito.lenient().doReturn(after.username).`when`(spy).getProperty(MockitoHelper.safeEq(after), MockitoHelper.safeEq(propertyName1))
-//        Mockito.lenient().doReturn(before.email).`when`(spy).getProperty(MockitoHelper.safeEq(before), MockitoHelper.safeEq(propertyName2))
-//        Mockito.lenient().doReturn(after.email).`when`(spy).getProperty(MockitoHelper.safeEq(after), MockitoHelper.safeEq(propertyName2))
+//        Mockito.lenient().doReturn(before.username).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(before),
+//            MockitoHelper.safeEq(propertyName1)
+//        )
+//        Mockito.lenient().doReturn(after.username).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(after),
+//            MockitoHelper.safeEq(propertyName1)
+//        )
+//        Mockito.lenient().doReturn(before.email).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(before),
+//            MockitoHelper.safeEq(propertyName2)
+//        )
+//        Mockito.lenient().doReturn(after.email).`when`(spy).getProperty(
+//            MockitoHelper.safeEq(after),
+//            MockitoHelper.safeEq(propertyName2)
+//        )
 //
 //        val result = spy.getChanges(before, after)
 //
@@ -1508,8 +1589,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetOperation_Added_ReturnLogOperation()
 //    {
-//        val before: ChookUser? = null
-//        val after = ChookUser(id = "id1", username = "username1")
+//        val before: AUser? = null
+//        val after = AUser(id = "id1", username = "username1")
 //
 //        val result = logService.getOperation(before, after)
 //
@@ -1520,8 +1601,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetOperation_Deleted_ReturnLogOperation()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1")
-//        val after: ChookUser? = null
+//        val before = AUser(id = "id1", username = "username1")
+//        val after: AUser? = null
 //
 //        val result = logService.getOperation(before, after)
 //
@@ -1532,8 +1613,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetOperation_Edited_ReturnLogOperation()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1")
-//        val after = ChookUser(id = "id1", username = "username2")
+//        val before = AUser(id = "id1", username = "username1")
+//        val after = AUser(id = "id1", username = "username2")
 //
 //        val result = logService.getOperation(before, after)
 //
@@ -1546,8 +1627,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogItemType_BothNull_ThrowArgumentException()
 //    {
-//        val before: ChookUser? = null
-//        val after: ChookUser? = null
+//        val before: AUser? = null
+//        val after: AUser? = null
 //
 //        try
 //        {
@@ -1580,8 +1661,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogItemType_AfterNull_ReturnLogItemType()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1")
-//        val after: ChookUser? = null
+//        val before = AUser(id = "id1", username = "username1")
+//        val after: AUser? = null
 //
 //        val result = logService.getLogItemType(before, after)
 //
@@ -1592,8 +1673,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogItemType_BeforeNull_ReturnLogItemType()
 //    {
-//        val before: ChookUser? = null
-//        val after = ChookUser(id = "id1", username = "username2")
+//        val before: AUser? = null
+//        val after = AUser(id = "id1", username = "username2")
 //
 //        val result = logService.getLogItemType(before, after)
 //
@@ -1604,8 +1685,8 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogItemType_Normal_ReturnLogItemType()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1")
-//        val after = ChookUser(id = "id1", username = "username2")
+//        val before = AUser(id = "id1", username = "username1")
+//        val after = AUser(id = "id1", username = "username2")
 //
 //        val result = logService.getLogItemType(before, after)
 //
@@ -1628,7 +1709,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetPropertiesUpdated_NormalSingle_ReturnString()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1")
+//        val before = AUser(id = "id1", username = "username1")
 //        val propertyName = "username"
 //        val changes = before::class.declaredMemberProperties.filter { it.name == propertyName }
 //
@@ -1641,7 +1722,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetPropertiesUpdated_NormalMultiple_ReturnString()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1", email = "example@example.com", recipesRegistered = 99)
+//        val before = AUser(id = "id1", username = "username1", email = "example@example.com", recipesRegistered = 99)
 //        val propertyName1 = "email"
 //        val propertyName2 = "recipesRegistered"
 //        val propertyName3 = "username"
@@ -1666,7 +1747,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogProperty_NullProperty_ReturnNull()
 //    {
-//        val before = ChookUser(id = "id1", username = null)
+//        val before = AUser(id = "id1", username = null)
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(before.username).`when`(spy).getProperty(MockitoHelper.anyObject(), Mockito.anyString())
@@ -1679,7 +1760,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogProperty_SensitiveString_ReturnString()
 //    {
-//        val before = ChookUser(id = "id1", password = "password1")
+//        val before = AUser(id = "id1", password = "password1")
 //        val propertyName = "password"
 //
 //        val spy = Mockito.spy(logService)
@@ -1698,7 +1779,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogProperty_NormalString_ReturnString()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1")
+//        val before = AUser(id = "id1", username = "username1")
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(before.username).`when`(spy).getProperty(MockitoHelper.anyObject(), Mockito.anyString())
@@ -1712,7 +1793,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetLogProperty_NormalInt_ReturnIntString()
 //    {
-//        val before = ChookUser(id = "id1", recipesRegistered = 42)
+//        val before = AUser(id = "id1", recipesRegistered = 42)
 //
 //        val spy = Mockito.spy(logService)
 //        Mockito.lenient().doReturn(before.recipesRegistered).`when`(spy).getProperty(MockitoHelper.anyObject(), Mockito.anyString())
@@ -1728,7 +1809,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetProperty_NullProperty_ReturnNull()
 //    {
-//        val before = ChookUser(id = "id1", username = null)
+//        val before = AUser(id = "id1", username = null)
 //
 //        val result = logService.getProperty(before, "username")
 //
@@ -1738,7 +1819,7 @@ class LogServiceTests
 //    @Test
 //    fun testGetProperty_Normal_ReturnString()
 //    {
-//        val before = ChookUser(id = "id1", username = "username1")
+//        val before = AUser(id = "id1", username = "username1")
 //
 //        val result = logService.getProperty(before, "username")
 //
