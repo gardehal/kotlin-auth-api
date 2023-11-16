@@ -10,23 +10,19 @@ Authentication API for various other projects.
 
 # TODO
 
-- DB
-- implement logic from chook
+- DB - local SQL on server - server must also be secure, more than firewall
 - safe login and auth return
-- various keys?
+- logic for multiple keys in rotation?
 
 - Security
     - Security checklist https://snyk.io/blog/spring-boot-security-best-practices/
     - User updates and moderation tools:
-        - GDPR info (Topic: Security, Articles: GDPR, Terms and Conditions)
+        - GDPR docs for usage, why where etc.
         - email blacklist (gdpr??), other prevention strategies?
-        - Input sanitation implementation
-        - implement salt, pepper in passwords - https://reflectoring.io/spring-security-password-handling/ if not already done by bcrypt
+        - implement salt, pepper in passwords - https://reflectoring.io/spring-security-password-handling/ - if not already done by bcrypt
         - other user functions like change password
         - ONLY POST where passwords are involved
         - set users as inactive when not active in x months/years
-- Web 
-    - Small interface for login, simple user info
 - Ansible and hosting on server
 - Later:
   - Put logging and basics (BaseX, enums, exceptions, annotations etc.) in packages (1 for logging, 1 for basics)
