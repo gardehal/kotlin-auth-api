@@ -11,10 +11,10 @@ data class AUser(
     var id: String = UUID.randomUUID().toString(),
 
     @JvmField
-    var added: String = Instant.now().toString(), // Instance as String
+    var added: String = Instant.now().toString(), // Instant as String
 
     @JvmField
-    var deleted: String? = null, // Instance as String
+    var deleted: String? = null, // Instant as String
 
     @JvmField
     @Sensitive
@@ -25,7 +25,11 @@ data class AUser(
 
     @JvmField
     @Sensitive
-    var password: String = Instant.now().toString(), // As encrypted
+    var salt: String,
+
+    @JvmField
+    @Sensitive
+    var password: String, // As encrypted
 
     @JvmField
     var about: String? = null,
@@ -34,7 +38,7 @@ data class AUser(
     var role: UserRole = UserRole.USER,
 
     @JvmField
-    var expirationTime: String? = null, // Instance as String
+    var expirationTime: String? = null, // Instant as String
 
     @JvmField
     var usersRecruited: Int = 0,
@@ -44,21 +48,21 @@ data class AUser(
     var moderatorComments: MutableMap<String, String> = mutableMapOf(),
 
     @JvmField
-    var lastActiveTime: String? = null, // Instance as String
+    var lastActiveTime: String? = null, // Instant as String
 
     @JvmField
-    var lockedUntilTime: String? = null, // Instance as String
+    var lockedUntilTime: String? = null, // Instant as String
 
     @JvmField
     var previousUsernames: MutableMap<String, String> = mutableMapOf(),
 
     @JvmField
-    var usernameChangeTime: String? = null, // Instance as String
+    var usernameChangeTime: String? = null, // Instant as String
 
     @JvmField
     // @Size(max = 100) // Max size for base64?
     var profilePicture: String? = null,
 
     @JvmField
-    var acceptedTerms: String? = null, // Instance as String
+    var acceptedTerms: String? = null, // Instant as String
 )

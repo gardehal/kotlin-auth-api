@@ -19,7 +19,7 @@ Authentication API for various other projects.
     - User updates and moderation tools:
         - GDPR docs for usage, why where etc.
         - email blacklist (gdpr??), other prevention strategies?
-        - implement salt, pepper in passwords - https://reflectoring.io/spring-security-password-handling/ - if not already done by bcrypt
+        - implement salt in passwords - https://reflectoring.io/spring-security-password-handling/ - if not already done by bcrypt
         - other user functions like change password
         - ONLY POST where passwords are involved
         - set users as inactive when not active in x months/years
