@@ -25,10 +25,6 @@ data class AUser(
 
     @JvmField
     @Sensitive
-    var salt: String,
-
-    @JvmField
-    @Sensitive
     var password: String, // As encrypted
 
     @JvmField

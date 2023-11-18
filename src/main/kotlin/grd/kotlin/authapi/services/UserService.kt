@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.DependsOn
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.crypto.bcrypt.BCrypt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -320,7 +319,6 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
         user.id = utilityService.getRandomString()
         user.previousUsernames = mutableMapOf()
         user.usernameChangeTime = Instant.now().toString()
-        user.salt = BCrypt.gensalt()
         user.password = passwordEncoder().encode(password)
         user.moderatorComments = mutableMapOf()
 
