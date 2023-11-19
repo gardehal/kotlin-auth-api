@@ -67,6 +67,17 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
         if(userLockedCheck.first)
             throw NotAuthorizedException(userLockedCheck.second)
 
+        if(settings.userModeration.disableInactiveAccounts == true
+            && user.lastActiveTime.isNotNull()
+            && utilityService.stringToDatetime(user.lastActiveTime!!)!!
+                .isAfter(Instant.now().plus(settings.userModeration.disableInactiveAccountsAfterMonths!!.toLong(), ChronoUnit.MONTHS)))
+        {
+//            user.lockedUntilTime = Instant.now().toString()
+//            update(user, "System",false, true) // Necessary?
+
+            throw NotAuthorizedException("Account locked due to ${settings.userModeration.disableInactiveAccountsAfterMonths ?: "unknown"} month(s) of inactivity.")
+        }
+
         if(authenticate(user, password))
             return jwtUtil.generateToken(user)
 

@@ -182,11 +182,31 @@ class AUserServiceUnitTests
     }
 
     @Test
+    fun testAuthenticateGenerateToken_UserInactive_ThrowNotAuthorizedException() = runBlocking {
+        val entity = user.copy(lastActiveTime = "2000-01-01T00:00:00.000Z")
+
+        val spy = spy(userService)
+        lenient().doReturn(entity).`when`(spy).findByUsernameEmail(anyString(), anyString())
+        lenient().doReturn(Pair(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
+
+        try
+        {
+            spy.authenticateGenerateToken(entity.username, entity.email, clearTextPassword)
+            fail() // Fail here
+        }
+        catch(e: NotAuthorizedException)
+        {
+            assertTrue(true)
+        }
+    }
+
+    @Test
     fun testAuthenticateGenerateToken_NotAuthenticated_ThrowNotAuthorizedException() = runBlocking {
         val entity = user.copy()
 
         val spy = spy(userService)
         lenient().doReturn(entity).`when`(spy).findByUsernameEmail(anyString(), anyString())
+        lenient().doReturn(Pair(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
         lenient().doReturn(false).`when`(spy).authenticate(MockitoHelper.anyObject(), anyString())
 
         try
@@ -206,6 +226,7 @@ class AUserServiceUnitTests
 
         val spy = spy(userService)
         lenient().doReturn(entity).`when`(spy).findByUsernameEmail(anyString(), anyString())
+        lenient().doReturn(Pair(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
         lenient().doReturn(true).`when`(spy).authenticate(MockitoHelper.anyObject(), anyString())
         lenient().`when`(jwtUtil.generateToken(entity)).thenReturn("token.mock.")
 
