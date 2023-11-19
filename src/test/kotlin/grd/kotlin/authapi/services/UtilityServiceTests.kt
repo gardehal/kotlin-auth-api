@@ -421,7 +421,7 @@ class UtilityServiceTests
     fun testSetReflection_ChangeFromNull_ReturnVoid()
     {
         val field = "deleted"
-        val entity = AUser(username = "Tom", deleted = null)
+        val entity = AUser(username = "Tom", password = "password", deleted = null)
         val newValue = "datetime"
 
         utilityService.setReflection(entity, field, newValue)
@@ -434,7 +434,7 @@ class UtilityServiceTests
     fun testSetReflection_ChangeToNull_ReturnVoid()
     {
         val field = "deleted"
-        val entity = AUser(username = "Tom", deleted = "datetime")
+        val entity = AUser(username = "Tom", password = "password", deleted = "datetime")
         val newValue: String? = null
 
         utilityService.setReflection(entity, field, newValue)
@@ -447,7 +447,7 @@ class UtilityServiceTests
     fun testSetReflection_ChangeNonExistentValue_ReturnVoid()
     {
         val field = "some_field"
-        val entity = AUser(username = "Tom")
+        val entity = AUser(username = "Tom", password = "password")
         val copy = entity.copy()
         val newValue: String? = null
 
@@ -460,7 +460,7 @@ class UtilityServiceTests
     fun testSetReflection_ChangeSame_ReturnVoid()
     {
         val field = "deleted"
-        val entity = AUser(username = "Tom", deleted = "datetime")
+        val entity = AUser(username = "Tom", password = "password", deleted = "datetime")
         val newValue = "datetime"
 
         utilityService.setReflection(entity, field, newValue)
