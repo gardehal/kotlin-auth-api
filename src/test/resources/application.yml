@@ -49,3 +49,8 @@ logging:
   logFileDirectory: ./testlogs
   logFilePrefix: AuthApi-TEST
   logFileExtension: json
+
+# Moderation of users
+userModeration:
+  disableInactiveAccounts: false
+  disableInactiveAccountsAfterMonths: 24

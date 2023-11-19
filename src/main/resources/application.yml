@@ -39,3 +39,8 @@ logging:
   logFileDirectory: ./logs
   logFilePrefix: AuthApi
   logFileExtension: json
+
+# Moderation of users
+userModeration:
+  disableInactiveAccounts: false
+  disableInactiveAccountsAfterMonths: 24
