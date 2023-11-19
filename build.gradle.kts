@@ -13,10 +13,10 @@ application {
 
 dependencies {
     // Spring
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.4")
-    implementation("org.springframework.boot:spring-boot-starter-web:3.1.0")
-    implementation("org.springframework.boot:spring-boot-starter-security:3.0.4")
-    implementation("org.springframework.boot:spring-boot-starter-validation:3.0.4")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.5")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.1.5")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.1.5")
+    implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
     implementation("org.springframework.security:spring-security-core:6.1.5")
     implementation("org.springdoc:springdoc-openapi-data-rest:1.6.15")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
@@ -44,7 +44,7 @@ dependencies {
     runtimeOnly("org.reactivestreams:reactive-streams:1.0.4")
     // Test/Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.0")
-    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.security:spring-security-test:6.0.2")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
     testImplementation("io.rest-assured:json-path:5.3.0")
     testImplementation("io.rest-assured:xml-path:5.3.0")
