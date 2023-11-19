@@ -11,9 +11,8 @@ open class Settings
     var server: Server = Server()
     var project: Project = Project()
     var jwt: Jwt = Jwt()
-    var controller: Controller = Controller()
-    var endpoint: Endpoint = Endpoint()
     var logging: Logging = Logging()
+    var userModeration: UserModeration = UserModeration()
 
     var env: Env = Env()
 

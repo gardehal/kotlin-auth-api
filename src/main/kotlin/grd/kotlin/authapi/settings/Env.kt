@@ -23,8 +23,6 @@ class Env
     var firebaseClientUrl: String? = null
 
     var jwtSign: String? = null
-    var passwordSalt: String? = null
-    var passwordPepper: String? = null
 
     fun initialize(resourceDirectory: String) = runBlocking {
         val primaryEnvPath = Paths.get("src", resourceDirectory, "resources", ".env").toString()
@@ -56,8 +54,6 @@ class Env
             firebaseClientUrl = dotEnv["FIREBASE_CLIENT_X509_CERT_URL"]!!
 
             jwtSign = dotEnv["JWT_SIGN"]!!
-            passwordSalt = dotEnv["PASSWORD_SALT"]!!
-            passwordPepper = dotEnv["PASSWORD_PEPPER"]!!
         }
         else
         {
@@ -74,8 +70,6 @@ class Env
             firebaseClientUrl = System.getenv("FIREBASE_CLIENT_X509_CERT_URL")
 
             jwtSign = System.getenv("JWT_SIGN")
-            passwordSalt = System.getenv("PASSWORD_SALT")
-            passwordPepper = System.getenv("PASSWORD_PEPPER")
         }
     }
 }
