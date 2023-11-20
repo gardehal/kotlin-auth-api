@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "grd.kotlin"
+group = "grd.kotlin.auth-api"
 version = "0.0.1-SNAPSHOT"
 
 java {
@@ -85,6 +85,10 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs += "-Xjsr305=strict"
         jvmTarget = "17"
     }
+}
+
+tasks.withType<JavaCompile>() {
+    options.encoding = "UTF-8"
 }
 
 tasks.withType<org.springframework.boot.gradle.tasks.bundling.BootJar>().configureEach {
