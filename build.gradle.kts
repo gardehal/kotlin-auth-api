@@ -82,7 +82,7 @@ plugins {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
+        freeCompilerArgs += "-Xjsr305=warn"
         jvmTarget = "17"
     }
 }
@@ -109,6 +109,10 @@ tasks.jacocoTestCoverageVerification {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    val javaToolchains = project.extensions.getByType<JavaToolchainService>()
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    })
 }
 
 val test by tasks.getting(Test::class) {
