@@ -38,6 +38,7 @@ dependencies {
     // JWT
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     // Logging
+    implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("io.klogging:klogging-jvm:0.4.13")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.1")
