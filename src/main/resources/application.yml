@@ -41,6 +41,6 @@ logging:
   logFileExtension: json
 
 # Moderation of users
-userModeration:
+moderation:
   disableInactiveAccounts: false
   disableInactiveAccountsAfterMonths: 24

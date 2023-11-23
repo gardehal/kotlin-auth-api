@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "userModeration")
+@ConfigurationProperties(prefix = "moderation")
 open class UserModeration
 {
     var disableInactiveAccounts: Boolean? = null
