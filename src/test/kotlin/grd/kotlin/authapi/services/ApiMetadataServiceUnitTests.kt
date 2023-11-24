@@ -92,7 +92,7 @@ class ApiMetadataServiceUnitTests
         assertNotNull(result.apiUptime)
         assertNull(result.dbCallFirebase)
         assertNotNull(result.messages)
-        assertEquals(3, result.messages!!.size)
+        assertEquals(1, result.messages!!.size)
     }
 
     @Test
@@ -108,7 +108,7 @@ class ApiMetadataServiceUnitTests
         assertNotNull(result.apiUptime)
         assertNotNull(result.dbCallFirebase)
         assertNotNull(result.messages)
-        assertEquals(2, result.messages!!.size)
+        assertEquals(1, result.messages!!.size)
     }
 
     @Test

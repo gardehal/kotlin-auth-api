@@ -6,7 +6,7 @@ import grd.kotlin.authapi.logging.LogFactory
 import grd.kotlin.authapi.settings.Settings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Service
 class LogService

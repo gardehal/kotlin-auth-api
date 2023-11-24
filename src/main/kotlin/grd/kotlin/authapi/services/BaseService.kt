@@ -15,7 +15,7 @@ import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.*
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Component
 @NoRepositoryBean

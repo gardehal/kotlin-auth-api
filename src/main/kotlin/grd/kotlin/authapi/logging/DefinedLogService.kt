@@ -4,7 +4,7 @@ import grd.kotlin.authapi.extensions.isNull
 import grd.kotlin.authapi.settings.Settings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 import kotlin.reflect.KFunction1
 import kotlin.reflect.KFunction2
 import kotlin.reflect.KProperty

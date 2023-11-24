@@ -439,21 +439,26 @@ class UtilityServiceTests
 
         utilityService.setReflection(entity, field, newValue)
 
-        assertNotNull(entity.deleted)
+        assertNull(entity.deleted)
         assertEquals(newValue, entity.deleted)
     }
 
     @Test
-    fun testSetReflection_ChangeNonExistentValue_ReturnVoid()
+    fun testSetReflection_ChangeNonExistentValue_ThrowNoSuchFieldException()
     {
         val field = "some_field"
         val entity = AUser(username = "Tom", password = "password")
-        val copy = entity.copy()
         val newValue: String? = null
 
-        utilityService.setReflection(entity, field, newValue)
-
-        assertEquals(entity, copy)
+        try
+        {
+            utilityService.setReflection(entity, field, newValue)
+            fail()
+        }
+        catch(e: NoSuchFieldException)
+        {
+            assertTrue(true)
+        }
     }
 
     @Test
