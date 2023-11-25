@@ -12,6 +12,7 @@ import grd.kotlin.authapi.extensions.isNotNull
 import grd.kotlin.authapi.extensions.isNull
 import grd.kotlin.authapi.jwt.JwtUtil
 import grd.kotlin.authapi.models.AUser
+import grd.kotlin.authapi.models.Check
 import grd.kotlin.authapi.settings.Settings
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.beans.factory.annotation.Autowired
@@ -64,8 +65,8 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
         val user = findByUsernameEmail(username, email)
 
         val userLockedCheck = isUserLocked(user, true)
-        if(userLockedCheck.first)
-            throw NotAuthorizedException(userLockedCheck.second)
+        if(userLockedCheck.result)
+            throw NotAuthorizedException(userLockedCheck.message)
 
         if(settings.userModeration.disableInactiveAccounts == true
             && user.lastActiveTime.isNotNull()
@@ -198,24 +199,24 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
      * @return Pair of Boolean false if user may proceed, and String reason
      * @throws none maybe
      **/
-    suspend fun isUserLocked(user: AUser, unlockIfEligible: Boolean): Pair<Boolean, String>
+    suspend fun isUserLocked(user: AUser, unlockIfEligible: Boolean): Check
     {
         val now = Instant.now()
 
         if(user.expirationTime != null)
         {
-            val expires = utilityService.stringToDatetime(user.expirationTime!!) ?: return Pair(true, "The expiration time of was malformed, please contact a moderator.")
+            val expires = utilityService.stringToDatetime(user.expirationTime!!) ?: return Check(true, "The expiration time of was malformed, please contact a moderator.")
             if(expires.isBefore(now))
             {
                 Log.main.info("User expired, {function}, {user}, {expired}", this.toString(), user.id, user.expirationTime)
-                return Pair(true, "This user expired ${user.expirationTime}.")
+                return Check(true, "This user expired ${user.expirationTime}.")
             }
 
-            return Pair(false, "This user expires ${user.expirationTime}.")
+            return Check(false, "This user expires ${user.expirationTime}.")
         }
         if(user.lockedUntilTime != null)
         {
-            val lockedUntil = utilityService.stringToDatetime(user.lockedUntilTime!!) ?: return Pair(true, "The locked until date of was malformed, please contact a moderator.")
+            val lockedUntil = utilityService.stringToDatetime(user.lockedUntilTime!!) ?: return Check(true, "The locked until date of was malformed, please contact a moderator.")
             if(unlockIfEligible && lockedUntil.isBefore(now))
             {
                 val updatedUser = user.copy(lockedUntilTime = null)
@@ -223,14 +224,14 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
                 update(updatedUser, editorId)
 
                 Log.main.info("User unlocked, {function}, {editor}, {user}, {expired}", this.toString(), editorId, user.id, user.expirationTime)
-                return Pair(false, "The user was unlocked (lock expired: ${user.lockedUntilTime}).")
+                return Check(false, "The user was unlocked (lock expired: ${user.lockedUntilTime}).")
             }
 
             Log.main.info("User locked, {function}, {user}, {expired}", this.toString(), user.id, user.expirationTime)
-            return Pair(true, "This user is locked until ${user.lockedUntilTime}.")
+            return Check(true, "This user is locked until ${user.lockedUntilTime}.")
         }
 
-        return Pair(false, "User is not set to expire and is not locked.")
+        return Check(false, "User is not set to expire and is not locked.")
     }
 
     /**

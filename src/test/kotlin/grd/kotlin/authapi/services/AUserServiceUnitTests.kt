@@ -441,10 +441,10 @@ class AUserServiceUnitTests
         val result = userService.isUserLocked(entity, false)
 
         assertNotNull(result)
-        assertTrue(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("expiration time of was malformed"))
-        println("Full isUserLocked message: ${result.second}")
+        assertTrue(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("expiration time of was malformed"))
+        println("Full isUserLocked message: ${result.message}")
     }
 
     @Test
@@ -461,11 +461,11 @@ class AUserServiceUnitTests
         val result = userService.isUserLocked(entity, false)
 
         assertNotNull(result)
-        assertTrue(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("This user expired"))
-        assertTrue(result.second.contains(expiresDateTimeString))
-        println("Full isUserLocked message: ${result.second}")
+        assertTrue(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("This user expired"))
+        assertTrue(result.message.contains(expiresDateTimeString))
+        println("Full isUserLocked message: ${result.message}")
     }
 
     @Test
@@ -482,11 +482,11 @@ class AUserServiceUnitTests
         val result = userService.isUserLocked(entity, false)
 
         assertNotNull(result)
-        assertFalse(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("This user expires"))
-        assertTrue(result.second.contains(expiresDateTimeString))
-        println("Full isUserLocked message: ${result.second}")
+        assertFalse(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("This user expires"))
+        assertTrue(result.message.contains(expiresDateTimeString))
+        println("Full isUserLocked message: ${result.message}")
     }
 
     @Test
@@ -502,10 +502,10 @@ class AUserServiceUnitTests
         val result = userService.isUserLocked(entity, false)
 
         assertNotNull(result)
-        assertTrue(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("locked until date of was malformed"))
-        println("Full isUserLocked message: ${result.second}")
+        assertTrue(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("locked until date of was malformed"))
+        println("Full isUserLocked message: ${result.message}")
     }
 
     @Test
@@ -522,11 +522,11 @@ class AUserServiceUnitTests
         val result = userService.isUserLocked(entity, false)
 
         assertNotNull(result)
-        assertTrue(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("This user is locked until"))
-        assertTrue(result.second.contains(lockedUntilDateTimeString))
-        println("Full isUserLocked message: ${result.second}")
+        assertTrue(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("This user is locked until"))
+        assertTrue(result.message.contains(lockedUntilDateTimeString))
+        println("Full isUserLocked message: ${result.message}")
     }
 
     @Test
@@ -545,11 +545,11 @@ class AUserServiceUnitTests
         val result = spy.isUserLocked(entity, true)
 
         assertNotNull(result)
-        assertTrue(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("This user is locked until"))
-        assertTrue(result.second.contains(lockedUntilDateTimeString))
-        println("Full isUserLocked message: ${result.second}")
+        assertTrue(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("This user is locked until"))
+        assertTrue(result.message.contains(lockedUntilDateTimeString))
+        println("Full isUserLocked message: ${result.message}")
     }
 
     @Test
@@ -568,11 +568,11 @@ class AUserServiceUnitTests
         val result = spy.isUserLocked(entity, true)
 
         assertNotNull(result)
-        assertFalse(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("The user was unlocked"))
-        assertTrue(result.second.contains(lockedUntilDateTimeString))
-        println("Full isUserLocked message: ${result.second}")
+        assertFalse(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("The user was unlocked"))
+        assertTrue(result.message.contains(lockedUntilDateTimeString))
+        println("Full isUserLocked message: ${result.message}")
     }
 
     @Test
@@ -586,10 +586,10 @@ class AUserServiceUnitTests
         val result = userService.isUserLocked(entity, false)
 
         assertNotNull(result)
-        assertFalse(result.first)
-        assertNotNull(result.second)
-        assertTrue(result.second.contains("not set to expire and is not locked"))
-        println("Full isUserLocked message: ${result.second}")
+        assertFalse(result.result)
+        assertNotNull(result.message)
+        assertTrue(result.message.contains("not set to expire and is not locked"))
+        println("Full isUserLocked message: ${result.message}")
     }
     // endregion
 
