@@ -1,5 +1,6 @@
 package grd.kotlin.authapi.services
 
+import grd.kotlin.authapi.MockitoHelper
 import grd.kotlin.authapi.dto.HealthDataDto
 import grd.kotlin.authapi.models.ApiMetadata
 import grd.kotlin.authapi.models.AUser
@@ -27,7 +28,10 @@ class ApiMetadataServiceUnitTests
     private lateinit var apiMetadataService: ApiMetadataService
 
     @Mock
-    private var utilityService: UtilityService? = null // Note: For BaseService
+    private lateinit var userService: UserService
+
+    @Mock
+    private lateinit var utilityService: UtilityService // Note: For BaseService
 
     @Mock
     private lateinit var logService: LogService // Note: For BaseService
@@ -40,6 +44,7 @@ class ApiMetadataServiceUnitTests
     @BeforeEach
     fun setup()
     {
+        userService = mock(UserService::class.java)
         utilityService = mock(UtilityService::class.java)
         logService = mock(LogService::class.java)
         MockitoAnnotations.openMocks(this)
@@ -56,11 +61,15 @@ class ApiMetadataServiceUnitTests
         val editor = AUser(id = "editor", username = "user", password = "pass")
         val expected = ApiMetadata(id = apiMetadata.id, totalUsers = 0, updatedTime = null)
 
-        val result = apiMetadataService.setData(copy, editor.id)
+        val spy = spy(apiMetadataService)
+        lenient().`when`(userService.getAll()).thenReturn(emptyList())
+
+        val result = spy.setData(copy, editor.id)
 
         assertNotNull(result)
         assertEquals(expected.id, result.id)
         assertNotNull(result.updatedTime)
+        assertEquals(0, result.totalUsers)
     }
 
     @Test
@@ -69,12 +78,16 @@ class ApiMetadataServiceUnitTests
         val editor = AUser(id = "editor", username = "user", password = "pass")
         val expected = ApiMetadata(id = apiMetadata.id, totalUsers = 1, updatedTime = null)
 
-        val result = apiMetadataService.setData(copy, editor.id)
+        val spy = spy(apiMetadataService)
+        lenient().`when`(userService.getAll()).thenReturn(listOf(editor))
+
+        val result = spy.setData(copy, editor.id)
 
         assertNotNull(result)
         assertEquals(expected.id, result.id)
         assertFalse(result.added.isBlank())
         assertNotNull(result.updatedTime)
+        assertEquals(1, result.totalUsers)
     }
     // endregion
 
