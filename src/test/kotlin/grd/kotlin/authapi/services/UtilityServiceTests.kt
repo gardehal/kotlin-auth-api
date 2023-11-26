@@ -623,8 +623,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -637,8 +637,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -651,8 +651,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNumbers = true, minimumLength = 2)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -665,8 +665,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNumbers = true, minimumLength = 2)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -679,8 +679,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNumbers = true, maximumLength = 8)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -693,8 +693,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNumbers = true, maximumLength = 8)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -707,8 +707,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNorwegianLetters = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -721,8 +721,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNorwegianLetters = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -735,8 +735,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNumbers = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -749,8 +749,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNumbers = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -763,8 +763,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowSingleSpace = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -777,8 +777,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowSingleSpace = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -791,8 +791,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowEmailSymbols = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -805,8 +805,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowEmailSymbols = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -819,8 +819,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNorwegianLetters = true, allowNumbers = true, allowEmailSymbols = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -833,8 +833,8 @@ class UtilityServiceTests
         val result = utilityService.validateInput(valueToCheck = input, allowNorwegianLetters = true, allowNumbers = true, allowEmailSymbols = true)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
     // endregion
 
@@ -849,8 +849,8 @@ class UtilityServiceTests
         val result = utilityService.validateEmail(input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -863,8 +863,8 @@ class UtilityServiceTests
         val result = utilityService.validateEmail(input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -877,8 +877,8 @@ class UtilityServiceTests
         val result = utilityService.validateEmail(input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -891,8 +891,8 @@ class UtilityServiceTests
         val result = utilityService.validateEmail(input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -905,8 +905,8 @@ class UtilityServiceTests
         val result = utilityService.validateEmail(input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
 
     @Test
@@ -919,8 +919,8 @@ class UtilityServiceTests
         val result = utilityService.validateEmail(input)
 
         assertNotNull(result)
-        assertEquals(expectedFirst, result.first)
-        assertTrue(result.second.contains(expectedSecondContains))
+        assertEquals(expectedFirst, result.result)
+        assertTrue(result.message!!.contains(expectedSecondContains))
     }
     // endregion
 

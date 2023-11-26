@@ -7,6 +7,7 @@ import com.github.fge.jsonpatch.JsonPatchException
 import grd.kotlin.authapi.enums.*
 import grd.kotlin.authapi.exceptions.*
 import grd.kotlin.authapi.extensions.isNull
+import grd.kotlin.authapi.models.Check
 import org.springframework.stereotype.Service
 import java.time.*
 import java.util.*
@@ -250,7 +251,7 @@ class UtilityService
      * @param allowEmailSymbols Boolean allow email symbols ._@
      * @param minimumLength Int minimum length, if null: none
      * @param maximumLength Int maximum length, if null: none
-     * @return Pair, Boolean true/false valid, String message
+     * @return Check, Boolean true/false valid, String message
      * @throws none
      **/
     fun validateInput(
@@ -261,16 +262,16 @@ class UtilityService
         allowEmailSymbols: Boolean = false,
         minimumLength: Int? = null,
         maximumLength: Int? = null,
-    ): Pair<Boolean, String>
+    ): Check
     {
         var value = valueToCheck
         if(value.isNullOrEmpty())
-            return Pair(false, "Value is null or empty.")
+            return Check(false, "Value is null or empty.")
 
         if(minimumLength != null && value.length < minimumLength)
-            return Pair(false, "Value is too short, minimumLength: $minimumLength.")
+            return Check(false, "Value is too short, minimumLength: $minimumLength.")
         if(maximumLength != null && value.length > maximumLength)
-            return Pair(false, "Value is too long, maximumLength: $maximumLength.")
+            return Check(false, "Value is too long, maximumLength: $maximumLength.")
 
         val norwegianLetters = """[a-zA-ZæøåÆØÅ]*""".toRegex()
         val numbers = """[0-9]*""".toRegex()
@@ -287,26 +288,26 @@ class UtilityService
             value = value.replace(email, "")
 
         if(value.isEmpty())
-            return Pair(true, "String is valid.")
+            return Check(true, "String is valid.")
 
-        return Pair(false, "Value contains illegal characters: \"$value\".")
+        return Check(false, "Value contains illegal characters: \"$value\".")
     }
     /**
      * Validate email
      * @param valueToCheck
-     * @return Pair, Boolean true/false valid, String message
+     * @return Check, Boolean true/false valid, String message
      * @throws none
      **/
-    fun validateEmail(valueToCheck: String?): Pair<Boolean, String>
+    fun validateEmail(valueToCheck: String?): Check
     {
-        if(valueToCheck.isNullOrEmpty()) return Pair(false, "Value is null or empty.")
+        if(valueToCheck.isNullOrEmpty()) return Check(false, "Value is null or empty.")
 
         val emailRegex = """(?:[a-z0-9!#${'$'}%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#${'$'}%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+))""".toRegex()
 
         if(valueToCheck.matches(emailRegex))
-            return Pair(true, "Email is valid.")
+            return Check(true, "Email is valid.")
 
-        return Pair(false, "The email is invalidly formatted.")
+        return Check(false, "The email is invalidly formatted.")
     }
 
     /**

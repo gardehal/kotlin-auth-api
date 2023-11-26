@@ -7,6 +7,7 @@ import grd.kotlin.authapi.enums.UserRole
 import grd.kotlin.authapi.exceptions.*
 import grd.kotlin.authapi.jwt.JwtUtil
 import grd.kotlin.authapi.models.AUser
+import grd.kotlin.authapi.models.Check
 import grd.kotlin.authapi.repositories.FirebaseRepository
 import grd.kotlin.authapi.settings.Settings
 import grd.kotlin.authapi.testdata.TestEntities
@@ -168,7 +169,7 @@ class AUserServiceUnitTests
 
         val spy = spy(userService)
         lenient().doReturn(entity).`when`(spy).findByUsernameEmail(anyString(), anyString())
-        lenient().doReturn(Pair(true, "mocked")).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
+        lenient().doReturn(Check(true, "mocked")).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
 
         try
         {
@@ -187,7 +188,7 @@ class AUserServiceUnitTests
 
         val spy = spy(userService)
         lenient().doReturn(entity).`when`(spy).findByUsernameEmail(anyString(), anyString())
-        lenient().doReturn(Pair(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
+        lenient().doReturn(Check(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
 
         try
         {
@@ -206,7 +207,7 @@ class AUserServiceUnitTests
 
         val spy = spy(userService)
         lenient().doReturn(entity).`when`(spy).findByUsernameEmail(anyString(), anyString())
-        lenient().doReturn(Pair(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
+        lenient().doReturn(Check(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
         lenient().doReturn(false).`when`(spy).authenticate(MockitoHelper.anyObject(), anyString())
 
         try
@@ -226,7 +227,7 @@ class AUserServiceUnitTests
 
         val spy = spy(userService)
         lenient().doReturn(entity).`when`(spy).findByUsernameEmail(anyString(), anyString())
-        lenient().doReturn(Pair(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
+        lenient().doReturn(Check(false, null)).`when`(spy).isUserLocked(MockitoHelper.anyObject(), anyBoolean())
         lenient().doReturn(true).`when`(spy).authenticate(MockitoHelper.anyObject(), anyString())
         lenient().`when`(jwtUtil.generateToken(entity)).thenReturn("token.mock.")
 
@@ -443,7 +444,7 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertTrue(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("expiration time of was malformed"))
+        assertTrue(result.message!!.contains("expiration time of was malformed"))
         println("Full isUserLocked message: ${result.message}")
     }
 
@@ -463,8 +464,8 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertTrue(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("This user expired"))
-        assertTrue(result.message.contains(expiresDateTimeString))
+        assertTrue(result.message!!.contains("This user expired"))
+        assertTrue(result.message!!.contains(expiresDateTimeString))
         println("Full isUserLocked message: ${result.message}")
     }
 
@@ -484,8 +485,8 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertFalse(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("This user expires"))
-        assertTrue(result.message.contains(expiresDateTimeString))
+        assertTrue(result.message!!.contains("This user expires"))
+        assertTrue(result.message!!.contains(expiresDateTimeString))
         println("Full isUserLocked message: ${result.message}")
     }
 
@@ -504,7 +505,7 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertTrue(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("locked until date of was malformed"))
+        assertTrue(result.message!!.contains("locked until date of was malformed"))
         println("Full isUserLocked message: ${result.message}")
     }
 
@@ -524,8 +525,8 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertTrue(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("This user is locked until"))
-        assertTrue(result.message.contains(lockedUntilDateTimeString))
+        assertTrue(result.message!!.contains("This user is locked until"))
+        assertTrue(result.message!!.contains(lockedUntilDateTimeString))
         println("Full isUserLocked message: ${result.message}")
     }
 
@@ -547,8 +548,8 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertTrue(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("This user is locked until"))
-        assertTrue(result.message.contains(lockedUntilDateTimeString))
+        assertTrue(result.message!!.contains("This user is locked until"))
+        assertTrue(result.message!!.contains(lockedUntilDateTimeString))
         println("Full isUserLocked message: ${result.message}")
     }
 
@@ -570,8 +571,8 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertFalse(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("The user was unlocked"))
-        assertTrue(result.message.contains(lockedUntilDateTimeString))
+        assertTrue(result.message!!.contains("The user was unlocked"))
+        assertTrue(result.message!!.contains(lockedUntilDateTimeString))
         println("Full isUserLocked message: ${result.message}")
     }
 
@@ -588,7 +589,7 @@ class AUserServiceUnitTests
         assertNotNull(result)
         assertFalse(result.result)
         assertNotNull(result.message)
-        assertTrue(result.message.contains("not set to expire and is not locked"))
+        assertTrue(result.message!!.contains("not set to expire and is not locked"))
         println("Full isUserLocked message: ${result.message}")
     }
     // endregion
@@ -786,7 +787,7 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(false, "mocked"))
+            anyInt())).thenReturn(Check(false, "mocked"))
 
         try
         {
@@ -812,8 +813,8 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(false, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(false, "mocked"))
 
         try
         {
@@ -841,7 +842,7 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(false, "mocked"))
+            anyInt())).thenReturn(Check(false, "mocked"))
 
         try
         {
@@ -868,8 +869,8 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(true, "mocked"))
         lenient().doReturn(AUser(username = "user", password = "pass")).`when`(spy).findByUsernameEmail(eq(null), eq(entity.email))
 
         try
@@ -898,8 +899,8 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(true, "mocked"))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(entity.username), eq(null))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(null), eq(entity.email))
         `when`(utilityService.getRandomString()).thenReturn(entity.id)
@@ -932,8 +933,8 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(true, "mocked"))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(entity.username), eq(null))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(null), eq(entity.email))
         `when`(utilityService.getRandomString()).thenReturn(entity.id)
@@ -968,8 +969,8 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(true, "mocked"))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(entity.username), eq(null))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(null), eq(entity.email))
         `when`(utilityService.getRandomString()).thenReturn(entity.id)
@@ -999,8 +1000,8 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(true, "mocked"))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(entity.username), eq(null))
         lenient().doThrow(NotFoundException("mocked")).`when`(spy).findByUsernameEmail(eq(null), eq(entity.email))
         `when`(utilityService.getRandomString()).thenReturn(entity.id)
@@ -1019,7 +1020,7 @@ class AUserServiceUnitTests
         val entity = user.copy(email = "old_email@test.com")
         val newEmail = "not an email"
 
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(false, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(false, "mocked"))
 
         try
         {
@@ -1037,7 +1038,7 @@ class AUserServiceUnitTests
         val entity = user.copy(email = "old_email@test.com")
         val newEmail = "test@test.com"
 
-        `when`(utilityService.validateEmail(anyString())).thenReturn(Pair(true, "mocked"))
+        `when`(utilityService.validateEmail(anyString())).thenReturn(Check(true, "mocked"))
 
         val result = userService.setUserEmail(entity, newEmail)
 
@@ -1130,7 +1131,7 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(false, "mocked"))
+            anyInt())).thenReturn(Check(false, "mocked"))
 
         try
         {
@@ -1155,7 +1156,7 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
         lenient().`when`(utilityService.stringToDatetime(anyString())).thenReturn(null)
 
         try
@@ -1184,7 +1185,7 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
         // Datetime for "now"
         lenient().`when`(utilityService.stringToDatetime(nowDateTimeString)).thenReturn(nowDateTime)
         // Datetime for users username_change_date
@@ -1218,7 +1219,7 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
         // Datetime for "now"
         lenient().`when`(utilityService.stringToDatetime(nowDateTimeString)).thenReturn(nowDateTime)
         // Datetime for users username_change_date
@@ -1251,7 +1252,7 @@ class AUserServiceUnitTests
             anyBoolean(),
             anyBoolean(),
             anyInt(),
-            anyInt())).thenReturn(Pair(true, "mocked"))
+            anyInt())).thenReturn(Check(true, "mocked"))
         // Datetime for "now"
         lenient().`when`(utilityService.stringToDatetime(nowDateTimeString)).thenReturn(nowDateTime)
         // Datetime for users username_change_date

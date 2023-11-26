@@ -196,7 +196,7 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
      * Option to unlock user if current datetime is after [user].lockedUntilTime. This will save to database.
      * @param user User to check
      * @param unlockIfEligible Boolean if user should be unbanned if their lockedUntilTime is in the past
-     * @return Pair of Boolean false if user may proceed, and String reason
+     * @return Check of Boolean false if user may proceed, and String reason
      * @throws none maybe
      **/
     suspend fun isUserLocked(user: AUser, unlockIfEligible: Boolean): Check
@@ -314,17 +314,17 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
             allowEmailSymbols = false,
             minimumLength = 2,
             maximumLength = 32)
-        if(!usernameCheck.first)
+        if(!usernameCheck.result)
         {
-            Log.main.info("User registration not valid: ${usernameCheck.second}, {function}, {username}, {editor}", this.toString(), dto.username, editorId)
-            throw ArgumentException("The username is not valid. ${usernameCheck.second}.")
+            Log.main.info("User registration not valid: ${usernameCheck.message}, {function}, {username}, {editor}", this.toString(), dto.username, editorId)
+            throw ArgumentException("The username is not valid. ${usernameCheck.message}.")
         }
 
         val emailCheck = utilityService.validateEmail(dto.email)
-        if(!emailCheck.first)
+        if(!emailCheck.result)
         {
-            Log.main.info("User registration not valid: ${usernameCheck.second}, {function}, {username}, {editor}", this.toString(), dto.username, editorId)
-            throw ArgumentException("The email is not valid. ${emailCheck.second}.")
+            Log.main.info("User registration not valid: ${usernameCheck.message}, {function}, {username}, {editor}", this.toString(), dto.username, editorId)
+            throw ArgumentException("The email is not valid. ${emailCheck.message}.")
         }
 
         val user = Converter.convert(dto, AUser::class.java)
@@ -386,10 +386,10 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
     suspend fun setUserEmail(user: AUser, newValue: String): AUser
     {
         val emailCheck = utilityService.validateEmail(newValue)
-        if(!emailCheck.first)
+        if(!emailCheck.result)
         {
-            Log.main.info("User new email invalid: ${emailCheck.second}, {function}, {subject}, {newValue}", this.toString(), user.id, newValue.censureEmail())
-            throw ArgumentException("Invalid email: ${emailCheck.second}")
+            Log.main.info("User new email invalid: ${emailCheck.message}, {function}, {subject}, {newValue}", this.toString(), user.id, newValue.censureEmail())
+            throw ArgumentException("Invalid email: ${emailCheck.message}")
         }
 
         user.email = newValue
@@ -453,10 +453,10 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
             minimumLength = 2,
             maximumLength = 32
         )
-        if(!usernameCheck.first)
+        if(!usernameCheck.result)
         {
-            Log.main.info("User username invalid: ${usernameCheck.second}, {function}, {subject}, {newValue}", this.toString(), user.id, newValue)
-            throw ArgumentException("Invalid username: ${usernameCheck.second}")
+            Log.main.info("User username invalid: ${usernameCheck.message}, {function}, {subject}, {newValue}", this.toString(), user.id, newValue)
+            throw ArgumentException("Invalid username: ${usernameCheck.message}")
         }
 
         // Limit frequency of name change, e.g. only once every few months, lastChange + cool-down must be before current date. If after, return false + message
