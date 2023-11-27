@@ -39,6 +39,9 @@ class BaseControllerUnitTests
     private lateinit var controllerUtilityService: ControllerUtilityService
 
     @Mock
+    private lateinit var entityService: UserService
+
+    @Mock
     private lateinit var userService: UserService
 
     @Mock
@@ -56,6 +59,7 @@ class BaseControllerUnitTests
     {
         controllerUtilityService = mock(ControllerUtilityService::class.java)
         userService = mock(UserService::class.java)
+        entityService = mock(UserService::class.java)
         gson = mock(Gson::class.java)
         MockitoAnnotations.openMocks(this)
 
@@ -115,7 +119,7 @@ class BaseControllerUnitTests
         val entity = user.copy()
         val expectedCode = 200
 
-        lenient().`when`(userService.getRandom()).thenReturn(entity)
+        lenient().`when`(entityService.getRandom()).thenReturn(entity)
 
         val result = controller.getRandom()
 
