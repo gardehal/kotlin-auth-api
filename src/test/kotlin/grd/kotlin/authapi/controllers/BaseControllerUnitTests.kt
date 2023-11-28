@@ -119,7 +119,7 @@ class BaseControllerUnitTests
         val entity = user.copy()
         val expectedCode = 200
 
-        lenient().`when`(entityService.getRandom()).thenReturn(entity)
+        lenient().`when`(entityService.getRandom()).thenReturn(entity) // Entity not initialized, error with double userservice?
 
         val result = controller.getRandom()
 
