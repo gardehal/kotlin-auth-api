@@ -1,5 +1,6 @@
 package grd.kotlin.authapi.models
 
+import grd.kotlin.authapi.enums.UserRole
 import java.time.Instant
 import java.util.*
 
@@ -18,4 +19,7 @@ class UserSystem(
 
     @JvmField
     var userId: String,
+
+    @JvmField
+    var chmod: String = "000",
 )
