@@ -1,17 +1,19 @@
 package grd.kotlin.authapi.controllers
 
+import com.google.gson.Gson
 import grd.kotlin.authapi.MockitoHelper
 import grd.kotlin.authapi.dto.Converter
+import grd.kotlin.authapi.dto.SystemDto
 import grd.kotlin.authapi.enums.UserRole
-import grd.kotlin.authapi.exceptions.*
+import grd.kotlin.authapi.exceptions.NotFoundException
 import grd.kotlin.authapi.models.AUser
 import grd.kotlin.authapi.models.HttpReturn
+import grd.kotlin.authapi.models.System
 import grd.kotlin.authapi.services.BaseService
 import grd.kotlin.authapi.services.ControllerUtilityService
-import grd.kotlin.authapi.settings.Settings
-import com.google.gson.Gson
-import grd.kotlin.authapi.dto.AUserDto
+import grd.kotlin.authapi.services.SystemService
 import grd.kotlin.authapi.services.UserService
+import grd.kotlin.authapi.settings.Settings
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -33,13 +35,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 class BaseControllerUnitTests
 {
     @InjectMocks
-    private lateinit var controller: BaseController<AUser, AUserDto, BaseService<AUser>>
+    private lateinit var controller: BaseController<System, SystemDto, BaseService<System>>
 
     @Mock
     private lateinit var controllerUtilityService: ControllerUtilityService
 
     @Mock
-    private lateinit var entityService: UserService
+    private lateinit var entityService: SystemService
 
     @Mock
     private lateinit var userService: UserService
@@ -53,18 +55,19 @@ class BaseControllerUnitTests
     private lateinit var authorizationFieldName: String
 
     private val user = AUser(id = "TestId01", username = "TestUser01", password = "pass", role = UserRole.MODERATOR)
+    private val system = System(id = "TestId01", name = "TestSystem01", active = true)
 
     @BeforeEach
     fun setup()
     {
         controllerUtilityService = mock(ControllerUtilityService::class.java)
         userService = mock(UserService::class.java)
-        entityService = mock(UserService::class.java)
+        entityService = mock(SystemService::class.java)
         gson = mock(Gson::class.java)
         MockitoAnnotations.openMocks(this)
 
-        controller.tClass = AUser::class.java
-        controller.tDtoClass = AUserDto::class.java
+        controller.tClass = System::class.java
+        controller.tDtoClass = SystemDto::class.java
         authorizationFieldName = injectedSettings.server.authenticationHeader!!
     }
 
@@ -73,14 +76,14 @@ class BaseControllerUnitTests
     @Test
     fun testAdd_Normal_Return201() = runBlocking {
         val headers = mapOf(Pair(authorizationFieldName, "valid-token"))
-        val entity = user.copy()
-        val dto = Converter.convert(entity, AUserDto::class.java)
+        val entity = system.copy()
+        val dto = Converter.convert(entity, SystemDto::class.java)
         val editor = user.copy(id = "editor")
         val expectedCode = 201
 
         lenient().`when`(userService.getUserFromHeaders(MockitoHelper.anyObject())).thenReturn(editor)
         lenient().`when`(userService.actionAllowed(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(true)
-        lenient().`when`(userService.add(MockitoHelper.anyObject(), MockitoHelper.anyObject(), anyBoolean())).thenReturn(entity)
+        lenient().`when`(entityService.add(MockitoHelper.anyObject(), MockitoHelper.anyObject(), anyBoolean())).thenReturn(entity)
 
         val result = controller.add(headers, dto)
 
@@ -94,8 +97,8 @@ class BaseControllerUnitTests
     @Test
     fun testAdd_ServerError_Return500() = runBlocking {
         val headers = mapOf(Pair(authorizationFieldName, "valid-token"))
-        val entity = user.copy()
-        val dto = Converter.convert(entity, AUserDto::class.java)
+        val entity = system.copy()
+        val dto = Converter.convert(entity, SystemDto::class.java)
         val expectedCode = 500
 
         lenient().`when`(userService.getUserFromHeaders(MockitoHelper.anyObject())).thenThrow(NullPointerException("mocked"))
@@ -116,10 +119,10 @@ class BaseControllerUnitTests
     // region getRandom
     @Test
     fun testGetRandom_Normal_Return200() = runBlocking {
-        val entity = user.copy()
+        val entity = system.copy()
         val expectedCode = 200
 
-        lenient().`when`(entityService.getRandom()).thenReturn(entity) // Entity not initialized, error with double userservice?
+        lenient().`when`(entityService.getRandom()).thenReturn(entity)
 
         val result = controller.getRandom()
 
