@@ -3,7 +3,7 @@ package grd.kotlin.authapi.models
 import java.time.Instant
 import java.util.*
 
-class System(
+data class System(
     @JvmField
     var id: String = UUID.randomUUID().toString(),
 

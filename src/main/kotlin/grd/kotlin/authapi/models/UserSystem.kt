@@ -4,7 +4,7 @@ import grd.kotlin.authapi.enums.UserRole
 import java.time.Instant
 import java.util.*
 
-class UserSystem(
+data class UserSystem(
     @JvmField
     var id: String = UUID.randomUUID().toString(),
 
