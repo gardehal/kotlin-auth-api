@@ -26,4 +26,3 @@ Authentication API for various other projects.
 - Ansible and hosting on server
 - Later:
   - Put logging and basics (BaseX, enums, exceptions, annotations etc.) in packages (1 for logging, 1 for basics)
-- other services and entities like systems?
