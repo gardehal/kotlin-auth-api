@@ -22,7 +22,7 @@ Authentication API for various other projects.
         - email blacklist (gdpr??), other prevention strategies?
         - other user functions like change password
         - ONLY POST where passwords are involved
-        - set users as inactive when not active in x months/years
+        - set users as inactive when not logged on (get token) in x months/years
 - Ansible and hosting on server
 - Later:
   - Put logging and basics (BaseX, enums, exceptions, annotations etc.) in packages (1 for logging, 1 for basics)
