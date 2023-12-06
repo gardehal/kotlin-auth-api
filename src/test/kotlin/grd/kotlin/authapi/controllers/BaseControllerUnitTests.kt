@@ -35,7 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 class BaseControllerUnitTests
 {
     @InjectMocks
-    private lateinit var controller: BaseController<System, SystemDto, BaseService<System>>
+    private lateinit var controller: BaseController<System, SystemDto, SystemService>
 
     @Mock
     private lateinit var controllerUtilityService: ControllerUtilityService
