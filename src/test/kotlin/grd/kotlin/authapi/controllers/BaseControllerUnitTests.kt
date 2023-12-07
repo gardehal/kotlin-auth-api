@@ -41,10 +41,10 @@ class BaseControllerUnitTests
     private lateinit var controllerUtilityService: ControllerUtilityService
 
     @Mock
-    private lateinit var entityService: SystemService
+    private lateinit var userService: UserService
 
     @Mock
-    private lateinit var userService: UserService
+    private lateinit var entityService: SystemService
 
     @Mock
     private lateinit var gson: Gson
@@ -122,6 +122,7 @@ class BaseControllerUnitTests
         val entity = system.copy()
         val expectedCode = 200
 
+        // kotlin.UninitializedPropertyAccessException: lateinit property entityService has not been initialized from controller
         lenient().`when`(entityService.getRandom()).thenReturn(entity)
 
         val result = controller.getRandom()
