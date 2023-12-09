@@ -39,10 +39,10 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     /**
-     * Authenticate that user logging in is who they claim they are
+     * Authenticate that user logging in is who they claim they are though password match.
      * @param user User user
      * @param inputPassword String user password
-     * @return Boolean true/false success
+     * @return Boolean true/false password match
      * @throws none
      **/
     fun authenticate(user: AUser, inputPassword: String): Boolean
