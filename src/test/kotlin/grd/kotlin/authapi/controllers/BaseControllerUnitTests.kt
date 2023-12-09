@@ -35,7 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 class BaseControllerUnitTests
 {
     @InjectMocks
-    private lateinit var controller: BaseController<System, SystemDto, BaseService<System>>
+    private lateinit var controller: BaseController<System, SystemDto, SystemService>
 
     @Mock
     private lateinit var controllerUtilityService: ControllerUtilityService
@@ -60,12 +60,7 @@ class BaseControllerUnitTests
     @BeforeEach
     fun setup()
     {
-        controllerUtilityService = mock(ControllerUtilityService::class.java)
-        userService = mock(UserService::class.java)
-        entityService = mock(SystemService::class.java)
-        gson = mock(Gson::class.java)
-        MockitoAnnotations.openMocks(this)
-
+        controller.entityService = entityService
         controller.tClass = System::class.java
         controller.tDtoClass = SystemDto::class.java
         authorizationFieldName = injectedSettings.server.authenticationHeader!!
@@ -122,7 +117,6 @@ class BaseControllerUnitTests
         val entity = system.copy()
         val expectedCode = 200
 
-        // kotlin.UninitializedPropertyAccessException: lateinit property entityService has not been initialized from controller
         lenient().`when`(entityService.getRandom()).thenReturn(entity)
 
         val result = controller.getRandom()
@@ -138,7 +132,7 @@ class BaseControllerUnitTests
     fun testGetRandom_ServerError_Return500() = runBlocking {
         val expectedCode = 500
 
-        lenient().`when`(userService.getRandom()).thenThrow(NullPointerException("mocked"))
+        lenient().`when`(entityService.getRandom()).thenThrow(NullPointerException("mocked"))
         lenient().`when`(controllerUtilityService.getErrorHttpReturn(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), anyInt()))
             .thenReturn(HttpReturn(expectedCode, "mocked"))
 
@@ -156,10 +150,10 @@ class BaseControllerUnitTests
     // region getById
     @Test
     fun testGetById_Normal_Return200() = runBlocking {
-        val entity = user.copy()
+        val entity = system.copy()
         val expectedCode = 200
 
-        lenient().`when`(userService.get(anyString(), anyBoolean())).thenReturn(entity)
+        lenient().`when`(entityService.get(anyString(), anyBoolean())).thenReturn(entity)
 
         val result = controller.getById(entity.id)
 
@@ -172,10 +166,10 @@ class BaseControllerUnitTests
 
     @Test
     fun testGetById_ServerError_Return500() = runBlocking {
-        val entity = user.copy()
+        val entity = system.copy()
         val expectedCode = 500
 
-        lenient().`when`(userService.get(anyString(), anyBoolean())).thenThrow(NullPointerException("mocked"))
+        lenient().`when`(entityService.get(anyString(), anyBoolean())).thenThrow(NullPointerException("mocked"))
         lenient().`when`(controllerUtilityService.getErrorHttpReturn(MockitoHelper.anyObject(), MockitoHelper.anyObject(), MockitoHelper.anyObject(), anyInt()))
             .thenReturn(HttpReturn(expectedCode, "mocked"))
 
@@ -211,13 +205,13 @@ class BaseControllerUnitTests
     @Test
     fun testGetByDetailedId_Normal_Return200() = runBlocking {
         val headers = mapOf(Pair(authorizationFieldName, "valid-token"))
-        val entity = user.copy()
+        val entity = system.copy()
         val editor = user.copy(id = "editor", role = UserRole.MODERATOR)
         val expectedCode = 200
 
         lenient().`when`(userService.getUserFromHeaders(MockitoHelper.anyObject())).thenReturn(editor)
         lenient().`when`(userService.actionAllowed(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(true)
-        lenient().`when`(userService.get(anyString(), anyBoolean())).thenReturn(entity)
+        lenient().`when`(entityService.get(anyString(), anyBoolean())).thenReturn(entity)
 
         val result = controller.getDetailedById(headers, entity.id)
 
@@ -252,15 +246,15 @@ class BaseControllerUnitTests
     // region getAll
     @Test
     fun testGetAll_Normal_Return200() = runBlocking {
-        val entity1 = user.copy(id = "entity1")
-        val entity2 = user.copy(id = "entity2")
-        val entity3 = user.copy(id = "entity3")
+        val entity1 = system.copy(id = "entity1")
+        val entity2 = system.copy(id = "entity2")
+        val entity3 = system.copy(id = "entity3")
         val all = listOf(entity1, entity2, entity3)
         val pageable = PageRequest.of(0, 20)
         val allPage = PageImpl(all, pageable, all.count().toLong())
         val expectedCode = 200
 
-        lenient().`when`(userService.getAll(
+        lenient().`when`(entityService.getAll(
             anyBoolean(),
             MockitoHelper.anyObject())).thenReturn(allPage)
 
@@ -278,15 +272,15 @@ class BaseControllerUnitTests
     fun testGetAll_NormalSetPage_Return200() = runBlocking {
         val pageNumber = 1
         val pageSize = 1
-        val entity1 = user.copy(id = "entity1")
-        val entity2 = user.copy(id = "entity2")
-        val entity3 = user.copy(id = "entity3")
+        val entity1 = system.copy(id = "entity1")
+        val entity2 = system.copy(id = "entity2")
+        val entity3 = system.copy(id = "entity3")
         val all = listOf(entity1, entity2, entity3)
         val pageable = PageRequest.of(pageNumber, pageSize)
         val allPage = PageImpl(all, pageable, all.count().toLong())
         val expectedCode = 200
 
-        lenient().`when`(userService.getAll(
+        lenient().`when`(entityService.getAll(
             anyBoolean(),
             MockitoHelper.anyObject())).thenReturn(allPage)
 
@@ -324,14 +318,14 @@ class BaseControllerUnitTests
     @Test
     fun testPatchById_Normal_Return200() = runBlocking {
         val headers = mapOf(Pair(authorizationFieldName, "valid-token"))
-        val entity = user.copy()
+        val entity = system.copy()
         val editor = user.copy(id = "editor")
         val expectedCode = 200
 
         lenient().`when`(userService.getUserFromHeaders(MockitoHelper.anyObject())).thenReturn(editor)
         lenient().`when`(userService.actionAllowed(MockitoHelper.anyObject(), MockitoHelper.anyObject())).thenReturn(true)
-        lenient().`when`(userService.patch(anyString(), anyString())).thenReturn(entity)
-        lenient().`when`(userService.update(MockitoHelper.anyObject(), anyString(), anyBoolean(), anyBoolean())).thenReturn(entity)
+        lenient().`when`(entityService.patch(anyString(), anyString())).thenReturn(entity)
+        lenient().`when`(entityService.update(MockitoHelper.anyObject(), anyString(), anyBoolean(), anyBoolean())).thenReturn(entity)
 
         val result = controller.patchById(headers, entity.id, "{'some': 'json'}")
 
