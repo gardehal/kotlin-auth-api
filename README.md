@@ -17,6 +17,7 @@ Authentication API for various other projects.
 
 - Security
     - Security checklist https://snyk.io/blog/spring-boot-security-best-practices/
+    - https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
     - User updates and moderation tools:
         - GDPR docs for usage, why where etc.
         - email blacklist (gdpr??), other prevention strategies?
