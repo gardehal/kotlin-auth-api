@@ -27,9 +27,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.0")
     implementation("org.owasp:dependency-check-gradle:8.1.2")
-    // Firebase
+    // Database
     implementation("com.google.firebase:firebase-admin:9.1.1")
     implementation("com.google.gms:google-services:4.3.15")
+    implementation("org.postgresql:postgresql:42.7.1")
+
     // JSON
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2")
