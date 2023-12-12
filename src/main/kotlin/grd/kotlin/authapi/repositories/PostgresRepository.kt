@@ -143,7 +143,8 @@ class PostgresRepository<TEntity: Any>(private val tClass: Class<TEntity>?) : Re
     {
         abortOnTest()
 
-//        repository.takeIf { expression(repository.findAll() as T) == true }
+//        var q = QueryBuilder()
+//        repository.findBy(T, q) takeIf { true == true }
         return emptyList()
 //        @Suppress("UNCHECKED_CAST")
 //        val documents = col as T
