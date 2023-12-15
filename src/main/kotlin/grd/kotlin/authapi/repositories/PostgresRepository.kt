@@ -7,12 +7,15 @@ import grd.kotlin.authapi.exceptions.NotImplementedException
 import grd.kotlin.authapi.exceptions.TestEnvironmentException
 import grd.kotlin.authapi.interfaces.IPostgresRepository
 import grd.kotlin.authapi.interfaces.RepositoryInterface
+import grd.kotlin.authapi.interfaces.SearchCriteria
+import grd.kotlin.authapi.interfaces.Spec
 import grd.kotlin.authapi.settings.Settings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.support.PagedListHolder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.stereotype.Component
 import java.time.Instant
@@ -143,8 +146,11 @@ class PostgresRepository<TEntity: Any>(private val tClass: Class<TEntity>?) : Re
     {
         abortOnTest()
 
-//        var q = QueryBuilder()
-//        repository.findBy(T, q) takeIf { true == true }
+        // call like
+//        users = getQueried { e: Query -> e.whereEqualTo("username", username) }
+        // findBy takes fluentquery
+//        repository.findBy()
+
         return emptyList()
 //        @Suppress("UNCHECKED_CAST")
 //        val documents = col as T
