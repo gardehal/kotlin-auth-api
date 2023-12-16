@@ -7,15 +7,13 @@ import grd.kotlin.authapi.exceptions.NotImplementedException
 import grd.kotlin.authapi.exceptions.TestEnvironmentException
 import grd.kotlin.authapi.interfaces.IPostgresRepository
 import grd.kotlin.authapi.interfaces.RepositoryInterface
-import grd.kotlin.authapi.interfaces.SearchCriteria
-import grd.kotlin.authapi.interfaces.Spec
 import grd.kotlin.authapi.settings.Settings
+import org.apache.lucene.queryparser.flexible.core.builders.QueryBuilder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.support.PagedListHolder
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.stereotype.Component
 import java.time.Instant
@@ -145,6 +143,9 @@ class PostgresRepository<TEntity: Any>(private val tClass: Class<TEntity>?) : Re
     override fun <T, R> getQueried(expression: (T) -> R): List<TEntity>
     {
         abortOnTest()
+        val actual: String = QueryBuilder().from(tClass)
+            .orderBy { x -> x.getId() }.asc().orderBy { x -> x.getName() }
+            .desc().to(NativeSQL()).sql()
 
         // call like
 //        users = getQueried { e: Query -> e.whereEqualTo("username", username) }
