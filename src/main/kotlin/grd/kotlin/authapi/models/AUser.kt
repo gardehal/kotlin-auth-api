@@ -5,12 +5,14 @@ import grd.kotlin.authapi.annotations.Sensitive
 import grd.kotlin.authapi.enums.UserRole
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import java.time.Instant
 import java.util.*
 
 @Entity
+@Table(name = "A_USER")
 data class AUser(
     @JvmField
     @NotNull
