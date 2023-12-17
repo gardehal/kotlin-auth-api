@@ -31,8 +31,6 @@ dependencies {
     implementation("com.google.firebase:firebase-admin:9.1.1")
     implementation("com.google.gms:google-services:4.3.15")
     implementation("org.postgresql:postgresql:42.7.1")
-    implementation("com.github.naskarlab:fluent-query-jpa-metamodel:0.0.1")
-    implementation("com.github.naskarlab:fluent-query-jpa:0.3.1")
     // JSON
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2")
