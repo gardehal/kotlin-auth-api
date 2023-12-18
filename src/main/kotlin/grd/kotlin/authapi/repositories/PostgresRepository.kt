@@ -144,16 +144,8 @@ class PostgresRepository<TEntity: Any>(private val tClass: Class<TEntity>?) : Re
     {
         abortOnTest()
 
-        var x = getQueried<T, R>(expression == null)
-
-        return emptyList()
-    }
-
-    fun <T, R> getQueried(predicate: Boolean): List<TEntity>
-    {
-        abortOnTest()
-
-        return repository.takeIf { predicate }!!.findAll()
+        @Suppress("UNCHECKED_CAST")
+        return repository.takeIf { e -> expression(e as T) as Boolean }!!.findAll()
     }
 
     /**
