@@ -2,8 +2,13 @@
 spring:
   datasource:
     initialization-mode: never
+    url: jdbc:postgresql://localhost/atuh
+    username: postgres
+    password: admin
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  jps:
+    generate-dll: true
 
 # Server Properties
 server:
