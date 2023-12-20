@@ -52,7 +52,8 @@ dependencies {
     testImplementation("io.rest-assured:xml-path:5.3.0")
     testImplementation("org.testcontainers:testcontainers:1.17.6")
     // Test/DB
-    testImplementation("com.h2database:h2:2.1.214")
+    implementation("com.h2database:h2:2.1.214")
+    implementation("org.hibernate:hibernate-core:6.1.7.Final")
     // Test/Mock
     testImplementation("org.mockito:mockito-core:5.2.0")
     testImplementation("io.rest-assured:spring-mock-mvc:5.3.0")
