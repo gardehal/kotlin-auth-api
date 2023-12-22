@@ -12,19 +12,6 @@
       debug:
         var: ansible_date_time
 
-    # Any Windows tasks, win_shell, win_find, win_stat, fails with the same error: AnsiballZ_[task].ps1 is not recognized as the name of a cmdlet, function, script file, or operable program.
-    # The same error is given when trying to run one of these powershell scripts directly though win_shell, though running in powershell works
-    # https://docs.ansible.com/ansible/latest/collections/ansible/windows/win_find_module.html
-#    - name: Check executable exists
-#      delegate_to: localhost
-#      become: false
-#      win_find:
-#        path: "{{ executable_path }}"
-#        patterns: [ "*.jar" ]
-#      register: executable_stats
-
-    # Fail if no executable with debug?
-
     # Run tests
 
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html

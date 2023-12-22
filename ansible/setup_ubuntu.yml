@@ -20,7 +20,7 @@
           - hwinfo
           - cron
           # Java
-          - openjdk-18-jre-headless
+          - openjdk-17-jre-headless
           # Docker
           - apt-transport-https
           - ca-certificates
@@ -29,85 +29,11 @@
           - python3-pip
           - virtualenv
           - python3-setuptools
+          # Database
+          - postgresql-common
+          - postgresql-15
         state: present
         force_apt_get: true
-
-    # Docker test - https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-20-04
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_key_module.html
-    - name: Add Docker GPG apt Key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_repository_module.html
-    - name: Add Docker Repository
-      apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu focal stable
-        state: present
-
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
-    - name: Update apt and install docker-ce
-      apt:
-        name: docker-ce
-        state: latest
-        update_cache: true
-
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/pip_module.html
-    - name: Install Docker Module for Python
-      pip:
-        name: docker
-
-    - name: Pull default Docker image
-      community.docker.docker_image:
-        name: seq
-        source: pull
-
-    - name: Create default containers
-      community.docker.docker_container:
-        name: "seq_{{ item }}"
-        image: seq
-        command: sleep 1d
-        state: present
-      with_sequence: count=1
-
-    # https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
-    - name: Enable UFW
-      become_method: su
-      become_user: root
-      ufw:
-        state: enabled
-        policy: deny
-        logging: on
-
-    # https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
-    - name: Setup UFW rules for LAN
-      become_method: su
-      become_user: root
-      ufw:
-        rule: allow
-        from_ip: "{{ private_ip }}/24"
-
-    # https://docs.ansible.com/ansible/latest/collections/community/general/ufw_module.html
-    - name: Setup UFW rules for ports
-      become_method: su
-      become_user: root
-      ufw:
-        rule: allow
-        port: "{{ item }}"
-        protocol: "tcp"
-      with_items:
-        - "22"
-        - "9000"
-        - "443"
-
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
-    - name: Set permissions /var
-      become_method: su
-      become_user: root
-      file:
-        path: /var
-        mode: "777"
-        state: directory
 
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
     - name: Create executable directories for executables, configs, logging, scripts
