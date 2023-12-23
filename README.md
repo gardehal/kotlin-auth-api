@@ -17,6 +17,16 @@ Authentication API for various other projects.
 
 - Security
     - Security checklist https://snyk.io/blog/spring-boot-security-best-practices/
+      1. HTTPS for prod
+      2. test deps and find Spring boot vulnerabilities
+      3. enable CSRF
+      4. content security for Spring Boot XSS protection
+      5. use OpenID Connect for auth
+      6. Password hashing
+      7. latest releases
+      8. Store secrets securely
+      9. Pen test
+      10. Security team reviews
     - https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
     - User updates and moderation tools:
         - GDPR docs for usage, why where etc.
