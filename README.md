@@ -28,6 +28,9 @@ Authentication API for various other projects.
       9. Pen test
       10. Security team reviews
     - https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
+      - jwt filter interactions? can combine?
+      - hasAuthority updates
+      - tests (integration)
     - User updates and moderation tools:
         - GDPR docs for usage, why where etc.
         - email blacklist (gdpr??), other prevention strategies?
