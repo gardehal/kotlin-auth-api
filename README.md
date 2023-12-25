@@ -31,11 +31,12 @@ Authentication API for various other projects.
       - jwt filter interactions? can combine?
       - hasAuthority updates
       - tests (integration)
-    - User updates and moderation tools:
+    - User updates:
         - GDPR docs for usage, why where etc.
-        - email blacklist (gdpr??), other prevention strategies?
-        - other user functions like change password
+        - change password
         - ONLY POST where passwords are involved
+    - Moderation
+        - email blacklist (gdpr??), other prevention strategies?
         - set users as inactive when not logged on (get token) in x months/years - tests
 - Ansible and hosting on server
 - Later:
