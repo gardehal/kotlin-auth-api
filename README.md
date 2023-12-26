@@ -33,6 +33,10 @@ Authentication API for various other projects.
       - tests (integration)
     - User updates:
         - GDPR docs for usage, why where etc.
+          - Email for contact? or someting
+          - username, password, about etc. shouldn't be personal information
+          - changes (excep pass) are logged for x months (?)
+          - must agree to these terms to use api
         - change password
         - ONLY POST where passwords are involved
     - Moderation
