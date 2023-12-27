@@ -10,10 +10,16 @@ Authentication API for various other projects.
 
 # TODO
 
-- DB - local SQL on server - server must also be secure, more than firewall
+- DB
+  - get working locally
+  - postgres
+  - local SQL on server 
+  - server must also be secure, more than firewall
 - safe login and auth return
-- logic for multiple keys in rotation?
-- remove a lot of nullables, update code/remove null checks, update tests
+  - back up and running after updates and db change
+- remove unnessecary nullables
+  - update code/remove null checks
+  - update tests
 
 - Security
     - Security checklist https://snyk.io/blog/spring-boot-security-best-practices/
