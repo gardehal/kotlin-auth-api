@@ -10,17 +10,16 @@ Authentication API for various other projects.
 
 # TODO
 
-- DB
+- DB - postgres
   - get working locally
-  - postgres
   - local SQL on server 
-  - server must also be secure, more than firewall
+  - timed monthly(?) backup?
+  - server must also be secure, firewall, sql injection etc.
 - safe login and auth return
   - back up and running after updates and db change
 - remove unnessecary nullables
   - update code/remove null checks
   - update tests
-
 - Security
     - Security checklist https://snyk.io/blog/spring-boot-security-best-practices/
       1. HTTPS for prod
