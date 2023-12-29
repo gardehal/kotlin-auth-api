@@ -42,7 +42,7 @@ Authentication API for various other projects.
           - username, password, about etc. shouldn't be personal information
           - changes (excep pass) are logged for x months (?)
           - must agree to these terms to use api
-        - change password
+        - change password (limit in time? password verification?)
         - ONLY POST where passwords are involved
     - Moderation
         - email blacklist (gdpr??), other prevention strategies?
