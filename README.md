@@ -38,11 +38,13 @@ Authentication API for various other projects.
       - tests (integration)
     - User updates:
         - GDPR docs for usage, why where etc.
-          - Email for contact? or someting
-          - username, password, about etc. shouldn't be personal information
+          - Email for newsletter/password changes
+          - username, password, about etc. shouldn't be and are not expected to be personal information (uses own fault for using personal info here?)
           - changes (excep pass) are logged for x months (?)
           - must agree to these terms to use api
-        - change password (limit in time? password verification?)
+          - GDPR compliant with automatic account delete (implications for other parts of API, like number of people registered etc. ?) 
+          - users may see what info is stored related to user
+        - change password (email verification (code or something? requires sending of emails and valid/existing emails at save...))
         - ONLY POST where passwords are involved
     - Moderation
         - email blacklist (gdpr??), other prevention strategies?
