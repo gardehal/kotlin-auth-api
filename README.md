@@ -15,6 +15,7 @@ Authentication API for various other projects.
   - local SQL on server 
   - timed monthly(?) backup?
   - server must also be secure, firewall, sql injection etc.
+- fix the weird duplicate of jwt service
 - safe login and auth return
   - back up and running after updates and db change
 - remove unnessecary nullables
@@ -46,6 +47,8 @@ Authentication API for various other projects.
           - users may see what info is stored related to user
         - change password (email verification (code or something? requires sending of emails and valid/existing emails at save...))
         - ONLY POST where passwords are involved
+          - Login/tokens
+          - change password
     - Moderation
         - email blacklist (gdpr??), other prevention strategies?
         - set users as inactive when not logged on (get token) in x months/years - tests
