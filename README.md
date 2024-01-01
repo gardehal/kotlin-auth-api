@@ -13,9 +13,9 @@ Authentication API for various other projects.
 - DB - postgres
   - get working locally
   - local SQL on server 
-  - timed monthly(?) backup?
+  - timed automatic monthly(?) backup?
   - server must also be secure, firewall, sql injection etc.
-- fix the weird duplicate of jwt service
+- fix the weird duplicate of jwt service (see spring security checklist below)
 - safe login and auth return
   - back up and running after updates and db change
 - remove unnessecary nullables
@@ -54,4 +54,4 @@ Authentication API for various other projects.
         - set users as inactive when not logged on (get token) in x months/years - tests
 - Ansible and hosting on server
 - Later:
-  - Put logging and basics (BaseX, enums, exceptions, annotations etc.) in packages (1 for logging, 1 for basics)
+  - Put basics (BaseX, enums, exceptions, annotations etc.) in a Gradle package (no publish)
