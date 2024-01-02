@@ -13,12 +13,12 @@ Authentication API for various other projects.
 - DB - postgres
   - get working locally
   - local SQL on server 
-  - timed automatic monthly(?) backup?
+  - timed automatic monthly(?) backup of data? (must rotate out old data)
   - server must also be secure, firewall, sql injection etc.
-- fix the weird duplicate of jwt service (see spring security checklist below)
+- fix the weird duplicate of jwt service (see spring security checklist below, was done because of security filter and circular dependencies)
 - safe login and auth return
   - back up and running after updates and db change
-- remove unnessecary nullables
+- remove unnecessary nullables
   - update code/remove null checks
   - update tests
 - Security
@@ -50,7 +50,7 @@ Authentication API for various other projects.
           - Login/tokens
           - change password
     - Moderation
-        - email blacklist (gdpr??), other prevention strategies?
+        - email, ip blacklist (gdpr??), other prevention strategies?
         - set users as inactive when not logged on (get token) in x months/years - tests
 - Ansible and hosting on server
 - Later:
