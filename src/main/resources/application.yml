@@ -1,17 +1,14 @@
 # Spring
 spring:
   datasource:
-    initialization-mode: never
-    url: jdbc:postgresql://localhost/atuh
+    url: jdbc:postgresql://localhost/auth
     username: postgres
     password: admin
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   jps:
     generate-dll: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
 

@@ -1,6 +1,7 @@
 package grd.kotlin.authapi.models
 
 import jakarta.persistence.Entity
+import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import java.time.Instant
@@ -11,6 +12,7 @@ import java.util.*
 data class System(
     @JvmField
     @NotNull
+    @Id
     var id: String = UUID.randomUUID().toString(),
 
     @JvmField
