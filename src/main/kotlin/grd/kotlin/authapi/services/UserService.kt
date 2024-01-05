@@ -17,7 +17,6 @@ import grd.kotlin.authapi.settings.Settings
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.DependsOn
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -26,7 +25,6 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 @Service
-@DependsOn("FirebaseInitialize")
 class UserService : BaseService<AUser>(AUser::class.java, true)
 {
     @Autowired
@@ -329,10 +327,10 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
 
         val user = Converter.convert(dto, AUser::class.java)
         user.id = utilityService.getRandomString()
-        user.previousUsernames = mutableMapOf()
+//        user.previousUsernames = mutableMapOf()
         user.usernameChangeTime = Instant.now().toString()
         user.password = passwordEncoder().encode(password)
-        user.moderatorComments = mutableMapOf()
+//        user.moderatorComments = mutableMapOf()
 
         // username, email must be unique
         var duplicateUsername = true
@@ -425,10 +423,10 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
      **/
     fun setModeratorComment(user: AUser, newValue: String): AUser
     {
-        val map = user.moderatorComments
-        map[Instant.now().toString()] = "${user.id}: $newValue"
+//        val map = user.moderatorComments
+//        map[Instant.now().toString()] = "${user.id}: $newValue"
 
-        user.moderatorComments = map
+//        user.moderatorComments = map
         return user
     }
 
@@ -475,11 +473,11 @@ class UserService : BaseService<AUser>(AUser::class.java, true)
             throw NotAuthorizedException("User may not change username before $lastChangeTimeout.")
         }
 
-        val previousNames = user.previousUsernames
-        previousNames[now.toString()] = user.username
+//        val previousNames = user.previousUsernames
+//        previousNames[now.toString()] = user.username
 
         user.username = newValue
-        user.previousUsernames = previousNames
+//        user.previousUsernames = previousNames
         user.usernameChangeTime = now.toString()
         return user
     }

@@ -4,15 +4,13 @@ import grd.kotlin.authapi.Log
 import grd.kotlin.authapi.dto.HealthDataDto
 import grd.kotlin.authapi.models.ApiMetadata
 import grd.kotlin.authapi.settings.Settings
+import jakarta.annotation.PostConstruct
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
-import jakarta.annotation.PostConstruct
 
 @Service
-@DependsOn("FirebaseInitialize")
 class ApiMetadataService : BaseService<ApiMetadata>(ApiMetadata::class.java, true)
 {
     @Autowired
