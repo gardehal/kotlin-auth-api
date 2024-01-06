@@ -8,6 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
+import java.io.Serializable
 import java.time.Instant
 import java.util.*
 
@@ -56,10 +57,10 @@ data class AUser(
     @NotNull
     var usersRecruited: Int = 0,
 
-    @JvmField
-    @NotNull
-    @NotLogged
-    var moderatorComments: MutableMap<String, String> = mutableMapOf(),
+//    @JvmField
+//    @NotNull
+//    @NotLogged
+//    var moderatorComments: MutableMap<String, String> = mutableMapOf(),
 
     @JvmField
     var lastActiveTime: String? = null, // Instant as String
@@ -67,9 +68,9 @@ data class AUser(
     @JvmField
     var lockedUntilTime: String? = null, // Instant as String
 
-    @JvmField
-    @NotNull
-    var previousUsernames: MutableMap<String, String> = mutableMapOf(),
+//    @JvmField
+//    @NotNull
+//    var previousUsernames: MutableMap<String, String> = mutableMapOf(),
 
     @JvmField
     var usernameChangeTime: String? = null, // Instant as String
@@ -80,4 +81,4 @@ data class AUser(
 
     @JvmField
     var acceptedTerms: String? = null, // Instant as String
-)
+) : Serializable

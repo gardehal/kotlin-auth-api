@@ -36,6 +36,13 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.2")
     implementation("com.github.java-json-tools:json-patch:1.13")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.jetbrains.exposed:exposed-core:0.40.1")
+    implementation("org.jetbrains.exposed:exposed-dao:0.40.1")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.40.1")
+    implementation("org.springframework.boot:spring-boot-starter-hateoas")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+//    runtimeOnly("org.postgresql:postgresql")
     // JWT
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     // Logging
