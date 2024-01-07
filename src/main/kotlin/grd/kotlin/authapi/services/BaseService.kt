@@ -7,6 +7,7 @@ import grd.kotlin.authapi.exceptions.NotFoundException
 import grd.kotlin.authapi.extensions.isNull
 import grd.kotlin.authapi.logging.LogLevel
 import grd.kotlin.authapi.repositories.FirebaseRepository
+import grd.kotlin.authapi.repositories.PostgresRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -27,7 +28,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
     @Autowired
     lateinit var logService: LogService
 
-    var repository = FirebaseRepository(tClass)
+    var repository = PostgresRepository(tClass)
 
     // If validateClass, TEntity must contain the following properties: id, added, deleted as String?
     val idPropertyName = "id"

@@ -4,13 +4,13 @@ import com.google.cloud.firestore.Query
 import grd.kotlin.authapi.exceptions.ArgumentException
 import grd.kotlin.authapi.exceptions.NotFoundException
 import grd.kotlin.authapi.models.AUser
-import grd.kotlin.authapi.repositories.FirebaseRepository
+import grd.kotlin.authapi.repositories.PostgresRepository
 import org.springframework.stereotype.Service
 
 @Service
 class JwtService
 {
-    private  var aUserRepository = FirebaseRepository(AUser::class.java)
+    private  var aUserRepository = PostgresRepository(AUser::class.java)
 
     /**
      * Find user by email or username
