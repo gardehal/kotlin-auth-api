@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @SpringBootApplication
 @EnableJpaRepositories("grd.kotlin.authapi")
 @ComponentScan("grd.kotlin.authapi")
-@EntityScan("grd.kotlin.authapi")
+@EntityScan("grd.kotlin.authapi.models.auser", "grd.kotlin.authapi.models.apimetadata", "grd.kotlin.authapi.models.system", "grd.kotlin.authapi.models.usersystem")
 class AuthApiApplication
 
 suspend fun main(args: Array<String>)
