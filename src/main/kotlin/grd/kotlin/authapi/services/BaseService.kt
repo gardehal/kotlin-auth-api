@@ -5,6 +5,7 @@ import grd.kotlin.authapi.exceptions.DatabaseErrorException
 import grd.kotlin.authapi.exceptions.DuplicateException
 import grd.kotlin.authapi.exceptions.NotFoundException
 import grd.kotlin.authapi.extensions.isNull
+import grd.kotlin.authapi.interfaces.IPostgresRepository
 import grd.kotlin.authapi.logging.LogLevel
 import grd.kotlin.authapi.repositories.FirebaseRepository
 import grd.kotlin.authapi.repositories.PostgresRepository
@@ -28,7 +29,8 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
     @Autowired
     lateinit var logService: LogService
 
-    var repository = PostgresRepository(tClass)
+    @Autowired
+    lateinit var repository: IPostgresRepository<TEntity>
 
     // If validateClass, TEntity must contain the following properties: id, added, deleted as String?
     val idPropertyName = "id"
@@ -91,7 +93,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
         updateProperty(entity, deletedPropertyName, null)
 
         val id = utilityService.getReflection(entity, idPropertyName)?.toString() ?: getNewId()
-        val result = repository.save(id, entity, asNew = true) ?:
+        val result = repository.save(entity) ?:
             throw DatabaseErrorException(addFailedMessage)
 
         val dbId = utilityService.getReflection(entity, idPropertyName)?.toString() ?: getNewId()
@@ -148,10 +150,10 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
     fun get(id: String, includeSoftDeleted: Boolean = false): TEntity
     {
         val entity = repository.findById(id)?: throw NotFoundException(notFoundMessage)
-        if(!includeSoftDeleted && isSoftDeleted(entity))
+        if(!includeSoftDeleted)
             throw NotFoundException(notFoundMessage)
 
-        return entity
+        return entity.get()
     }
 
     /**
@@ -179,7 +181,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
      **/
     fun <T, R> getQueried(expression: (T) -> R): List<TEntity>
     {
-        return repository.getQueried(expression)
+        return emptyList()
     }
 
     /**
@@ -192,7 +194,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
     @Throws(NotFoundException::class)
     fun <T, R> getQueried(expression: (T) -> R, pageable: Pageable): Page<TEntity>
     {
-        return repository.getQueried(expression, pageable)
+        return Page.empty<TEntity>()
     }
 
     /**
@@ -267,7 +269,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
         val id = utilityService.getReflection(entity, idPropertyName)!!.toString()
         val before = get(id, includeSoftDeleted) // Throws NotFoundException on no entity
 
-        val result = repository.save(id, entity, asNew = false) ?:
+        val result = repository.save(entity) ?:
             throw DatabaseErrorException(updateFailedMessage)
 
         val dbId = utilityService.getReflection(entity, idPropertyName)?.toString() ?: getNewId()
@@ -319,7 +321,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
 
         updateProperty(entity, deletedPropertyName, Instant.now().toString())
 
-        val result = repository.save(id, entity, asNew = false) ?:
+        val result = repository.save(entity) ?:
             throw DatabaseErrorException(deleteFailedMessage)
 
         val dbId = utilityService.getReflection(entity, idPropertyName)?.toString() ?: getNewId()
@@ -346,7 +348,7 @@ open class BaseService<TEntity: Any>(final var tClass: Class<TEntity>?, var vali
 
         updateProperty(entity, deletedPropertyName, null)
 
-        val result = repository.save(id, entity, asNew = false) ?:
+        val result = repository.save(entity) ?:
             throw DatabaseErrorException(restoreFailedMessage)
 
         val dbId = utilityService.getReflection(entity, idPropertyName)?.toString() ?: getNewId()

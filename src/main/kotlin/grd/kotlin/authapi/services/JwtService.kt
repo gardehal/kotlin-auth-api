@@ -3,14 +3,18 @@ package grd.kotlin.authapi.services
 import com.google.cloud.firestore.Query
 import grd.kotlin.authapi.exceptions.ArgumentException
 import grd.kotlin.authapi.exceptions.NotFoundException
+import grd.kotlin.authapi.interfaces.IPostgresRepository
 import grd.kotlin.authapi.models.AUser
 import grd.kotlin.authapi.repositories.PostgresRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class JwtService
 {
-    private  var aUserRepository = PostgresRepository(AUser::class.java)
+    @Autowired
+    private lateinit var aUserRepository: IPostgresRepository<AUser>
+//    private  var aUserRepository = PostgresRepository(AUser::class.java)
 
     /**
      * Find user by email or username
@@ -26,10 +30,6 @@ class JwtService
         var users = emptyList<AUser>()
         if(username.isNullOrEmpty() && email.isNullOrEmpty())
             throw ArgumentException("Enter a username or an email")
-        else if(!username.isNullOrEmpty())
-            users = aUserRepository.getQueried { e: Query -> e.whereEqualTo("username", username) }
-        else if(!email.isNullOrEmpty())
-            users = aUserRepository.getQueried { e: Query -> e.whereEqualTo("email", email) }
 
         when
         {

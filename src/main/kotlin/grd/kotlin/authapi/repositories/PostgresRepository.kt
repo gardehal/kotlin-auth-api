@@ -21,7 +21,6 @@ import java.util.function.Predicate
 import kotlin.jvm.optionals.getOrNull
 
 @Component
-@NoRepositoryBean
 class PostgresRepository<TEntity: Any>(private val tClass: Class<TEntity>?) : RepositoryInterface<TEntity>
 {
     private val settings = Settings()
